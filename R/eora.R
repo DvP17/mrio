@@ -1,8 +1,16 @@
-###########################################################################|
-###############################   E O R A   ###############################|
-###########################################################################|
-
-# Function
+#' Construct matrix for specific environmental indicator of Eora
+#'
+#' Load Eora data and return a matrix from an environmental indicator.
+#'
+#' @usage readEora(year, indicator)
+#'
+#' @param year Numeric for the respective year
+#' @param indicator Numeric for the row number of the corresponding
+#' indicator
+#'
+#' @examples readEora(year = 1995, indicator = 200)
+#'
+#' @export
 readEora <- function(year, indicator) {
 
   # define path
