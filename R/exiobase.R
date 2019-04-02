@@ -1,14 +1,21 @@
-###########################################################################|
-###########################   E X I O B A S E   ###########################|
-###########################################################################|
+#' Construct matrix for specific environmental indicator of EXIOBASE
+#'
+#' Load EXIOBASE data and return a matrix from an environmental indicator.
+#'
+#' @usage readExio(year, indicator)
+#'
+#' @param year Numeric for the respective year
+#' @param indicator Numeric for the row number of the corresponding
+#' indicator
+#'
+#' @return None
+#'
+#' @examples readExio(year = 1995, indicator = 200)
+#'
+#' @export
+readExio <- function(year, indicator) {
 
-# Function
-library(data.table)
-readExio <- function(arg1, arg2) { # arg1 should be a string from filenames
-
-  # get year and define path
-  year <- arg1
-
+  # define path
   path <- c(
     paste0("IOT_", year, "_ixi/A.txt"),
     paste0("IOT_", year, "_ixi/Y.txt"),
@@ -16,22 +23,25 @@ readExio <- function(arg1, arg2) { # arg1 should be a string from filenames
   )
 
   # read matrices
-  A <- as.matrix(fread(path[1], select = 3:7989, skip = 3, header = F))
+  A <- as.matrix(data.table::fread(path[1], select = 3:7989, skip = 3,
+                                   header = F))
 
-  FD <- as.matrix(fread(path[2], select = 3:345, skip = 3, header = F))
+  FD <- as.matrix(data.table::fread(path[2], select = 3:345, skip = 3,
+                                    header = F))
 
-  Q <- as.matrix(fread(path[3], select = 2:7988, skip = 2, header = F))
+  Q <- as.matrix(data.table::fread(path[3], select = 2:7988, skip = 2,
+                                   header = F))
 
   # satellite indicators
-  if (arg2 < 7988) {
+  if (indicator < 7988) {
 
-    Q <- Q[arg2,]
+    Q <- Q[indicator,]
 
 
-  } else if (arg2 == 7988) {
+  } else if (indicator == 7988) {
 
     # load characterization factors
-    CF <- fread("QH_EXIOlabel_CF.csv", select = 6)
+    CF <- data.table::fread("QH_EXIOlabel_CF.csv", select = 6)
     Q <- Q[which(!is.na(CF)) + 23,] # +23 bc data starts 26 row minus head
 
     # weight by characterization factors
@@ -77,13 +87,34 @@ readExio <- function(arg1, arg2) { # arg1 should be a string from filenames
 
 
 
-############################################################################
-## For Loop for all matrices ###############################################
-exioloop <- function(arg1, arg2) {
+#' Construct list of matrices for specific environmental indicator of EXIOBASE
+#'
+#' Load EXIOBASE data and return a list of matrices from an environmental
+#' indicator ocer a period of time.
+#'
+#' @usage exioloop(years, indicator)
+#'
+#' @param years Numeric vector for the respective year
+#' @param indicator Numeric for the row number of the corresponding
+#' indicator
+#'
+#' @return Vector of numerics representing the chosen years
+#' @return Numerics representing the chosen indicator
+#'
+#' @examples exioloop(years = 1995:2000, indicator = 200)
+#'
+#' @export
+exioloop <- function(years, indicator) {
 
   # Test duration and ask for choice
   sysspeed <- system.time(for (i in 1:999999) {y <- i ^ i})
-  duration <- length(arg1) * sysspeed * 217.648 # 217 is speed for loop=1s
+  if (sysspeed[3] > 0.7) {
+    duration <- length(years) * sysspeed[3] * 217.648 # 217 is speed for loop=1s
+
+  } else {
+    sysspeed <- system.time(for (i in 1:9999999) {y <- i ^ i})
+    duration <- length(years) * sysspeed[3] * 15.418 # 15 is speed for loop=1s
+  }
 
   choice <- menu(c("Yes", "No"),
                  title = sprintf("This process will take about %.1f minutes. Do you want to proceed? \n",
@@ -93,13 +124,13 @@ exioloop <- function(arg1, arg2) {
 
     # Core function
     emissionall <- list()
-    for (i in arg1) {
+    for (i in years) {
 
-      emissionall[[i]] <- readExio(i, arg2)
+      emissionall[[i]] <- readExio(i, indicator)
 
       # progress bar
-      setTxtProgressBar(txtProgressBar(min = min(arg1) - 1,
-                                       max = max(arg1), style = 3), i)
+      setTxtProgressBar(txtProgressBar(min = min(years) - 1,
+                                       max = max(years), style = 3), i)
 
     }
 

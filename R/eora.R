@@ -3,12 +3,9 @@
 ###########################################################################|
 
 # Function
-library(data.table)
-readEora <- function(arg1, arg2) { # arg1 should be a string from filenames
+readEora <- function(year, indicator) {
 
-  # get year and define path
-  year <- arg1
-
+  # define path
   path <- c(
     paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_T.txt"),
     paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_FD.txt"),
@@ -16,22 +13,22 @@ readEora <- function(arg1, arg2) { # arg1 should be a string from filenames
   )
 
   # load data
-  T <- as.matrix(fread(path[1], header = F))
+  T <- as.matrix(data.table::fread(path[1], header = F))
 
-  FD <- as.matrix(fread(path[2], header = F))
+  FD <- as.matrix(data.table::fread(path[2], header = F))
 
-  Q <- as.matrix(fread(path[3], header = F))
+  Q <- as.matrix(data.table::fread(path[3], header = F))
 
   # satellite indicators
-  if (arg2 <= 4915) {
+  if (indicator <= 4915) {
 
-    Q <- Q[arg2,]
+    Q <- Q[indicator,]
 
 
-  } else if (arg2 > 4915) {
+  } else if (indicator > 4915) {
 
     # load characterization factors
-    CF <- fread("QH_EXIOlabel_CF.csv", select = 6)
+    CF <- data.table::fread("QH_EXIOlabel_CF.csv", select = 6)
     Q <- Q[which(!is.na(CF)) + 23,] # +23 bc data starts 26 row minus head
 
     # weight by characterization factors
@@ -75,11 +72,17 @@ readEora <- function(arg1, arg2) { # arg1 should be a string from filenames
 
 ############################################################################
 ## For Loop for all matrices ###############################################
-eoraloop <- function(arg1, arg2) {
+eoraloop <- function(years, indicator) {
 
   # Test duration and ask for choice
   sysspeed <- system.time(for (i in 1:999999) {y <- i ^ i})
-  duration <- length(arg1) * sysspeed * 60.791 # 217 is speed for loop=1s
+  if (sysspeed[3] > 0.7) {
+    duration <- length(years) * sysspeed[3] * 60.791 # 60.79 is speed for loop=1s
+
+  } else {
+    sysspeed <- system.time(for (i in 1:9999999) {y <- i ^ i})
+    duration <- length(years) * sysspeed[3] * 4.170115 # 4.17 is speed for loop=1s
+  }
 
   choice <- menu(c("Yes", "No"),
                  title = sprintf("This process will take about %.1f minutes. Do you want to proceed? \n",
@@ -89,13 +92,13 @@ eoraloop <- function(arg1, arg2) {
 
     # Core function
     emissionall <- list()
-    for (i in arg1) {
+    for (i in years) {
 
-      emissionall[[i]] <- readEora(i, arg2)
+      emissionall[[i]] <- readEora(i, indicator)
 
       # progress bar
-      setTxtProgressBar(txtProgressBar(min = min(arg1) - 1,
-                                       max = max(arg1), style = 3), i)
+      setTxtProgressBar(txtProgressBar(min = min(years) - 1,
+                                       max = max(years), style = 3), i)
 
     }
 
