@@ -11,5 +11,6 @@ Encoding: UTF-8
 LazyData: true
 Imports:
   bit64 (>= 0.9-7),
-  data.table (>= 1.12.0)
+  data.table (>= 1.12.0),
+  tidyr (>= 0.8.3)
 RoxygenNote: 6.1.1

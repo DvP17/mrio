@@ -143,3 +143,12 @@ exioloop <- function(years, indicator) {
   }
 
 }
+
+
+
+
+# emissiondyads <- emissionmatrix %>% as.data.frame() %>%
+#   gather(row.names, var, everything())
+# reshape2::colsplit(emissiondyads$Var1, "_", c("1","2"))
+
+
