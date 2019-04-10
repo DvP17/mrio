@@ -14,7 +14,7 @@
 #'
 #' @return None
 #'
-#' @examples dyads(year = 1995:1996, eoramatrixobject)
+#' @examples dyads(year = 1995:1996, dataobject, country = c("DEU", "CHN"))
 #'
 #' @export
 dyads <- function(year, data, country) {

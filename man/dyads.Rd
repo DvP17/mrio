@@ -4,12 +4,14 @@
 \alias{dyads}
 \title{Transform matrices into dyadic data.frames}
 \usage{
-dyads(year, data)
+dyads(year, data, country)
 }
 \arguments{
 \item{year}{Numeric vector or number for the respective year/s}
 
 \item{data}{Data object/ matrix that was created before}
+
+\item{country}{String or character vector for corresponding country/ies}
 }
 \value{
 None
@@ -22,6 +24,6 @@ Note that high RAM is required to execute this function for Exiobase and
 multiple years.
 }
 \examples{
-dyads(year = 1995:1996, eoramatrixobject)
+dyads(year = 1995:1996, dataobject, country = c("DEU", "CHN"))
 
 }
