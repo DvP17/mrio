@@ -20,8 +20,8 @@ None
 Matrices and list with matrices will be transformed into
 data.frames and labeled. The type of data input is recognized
 automatically. Year input can be a vector of year or one single year.
-Note that high RAM is required to execute this function for Exiobase and
-multiple years.
+Note that high RAM is required to execute this function for all
+countries especially for Exiobase and larger time frames.
 }
 \examples{
 dyads(year = 1995:1996, dataobject, country = c("DEU", "CHN"))
