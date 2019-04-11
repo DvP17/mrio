@@ -78,8 +78,25 @@ readEora <- function(year, indicator) {
 
 }
 
-############################################################################
-## For Loop for all matrices ###############################################
+
+
+#' Construct list of matrices for specific environmental indicator of Eora
+#'
+#' Load Eora data and return a list of matrices from an environmental
+#' indicator ocer a period of time.
+#'
+#' @usage eoraloop(years, indicator)
+#'
+#' @param years Numeric vector for the respective year
+#' @param indicator Numeric for the row number of the corresponding
+#' indicator
+#'
+#' @return Vector of numerics representing the chosen years
+#' @return Numerics representing the chosen indicator
+#'
+#' @examples eoraloop(years = 1995:2000, indicator = 200)
+#'
+#' @export
 eoraloop <- function(years, indicator) {
 
   # Test duration and ask for choice
