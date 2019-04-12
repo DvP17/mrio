@@ -10,14 +10,15 @@
 #'
 #' @param year Numeric vector or number for the respective year/s
 #' @param data Data object/ matrix that was created before
-#' @param country String or character vector for corresponding country/ies
+#' @param input String or character vector for input country/ies
+#' @param output String or character vector for output country/ies
 #'
-#' @return None
+#' @return data.frame
 #'
-#' @examples dyads(year = 1995:1996, dataobject, country = c("DEU", "CHN"))
+#' @examples dyads(year = 1995:1996, dataobject, output = c("DEU", "CHN"))
 #'
 #' @export
-dyads <- function(year, data, country) {
+dyads <- function(year, data, input, output) {
 
   # Evaluate data input
   if (!is.list(data)) {
@@ -38,13 +39,27 @@ dyads <- function(year, data, country) {
     labels <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
                          header = F)
 
-    if (hasArg(country)) {
-      data <- data[which(labels$V2 %in% country), which(labels$V2 %in% country)]
-      labels <- labels[which(labels$V2 %in% country),]
+    if (hasArg(input) & !hasArg(output)) {
+      data <- data[which(labels$V2 %in% input),]
+      colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+      labels <- labels[which(labels$V2 %in% input),]
+      row.names(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+    } else if (hasArg(output) & !hasArg(input)) {
+      data <- data[,which(labels$V2 %in% output)]
+      row.names(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+      labels <- labels[which(labels$V2 %in% output),]
+      colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+    } else if (hasArg(input) & hasArg(output)) {
+      data <- data[which(labels$V2 %in% input), which(labels$V2 %in% output)]
+      labels1 <- labels[which(labels$V2 %in% input),]
+      labels2 <- labels[which(labels$V2 %in% output),]
+      row.names(data) <- c(paste0(labels1[[2]], "_", labels1[[4]]))
+      colnames(data) <- c(paste0(labels2[[2]], "_", labels2[[4]]))
+    } else {
+      colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+      row.names(data) <- colnames(data)
     }
 
-    colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
-    row.names(data) <- colnames(data)
 
     data <- reshape2::melt(data, as.is = T) # as.is makes chr
     data <- tidyr::separate(data, Var1, into = c("C1", "S1"), sep = "_")
@@ -59,16 +74,40 @@ dyads <- function(year, data, country) {
     labels <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
                          header = F)
 
-    if (hasArg(country)) {
-      data <- lapply(data, function(x) {x[which(labels$V2 %in% country),
-                                          which(labels$V2 %in% country)]})
-      labels <- labels[which(labels$V2 %in% country),]
+
+    if (hasArg(input) & !hasArg(output)) {
+      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),]})
+      colnames <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {colnames(x) <- colnames; x})
+      labels <- labels[which(labels$V2 %in% input),]
+      labels <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- lapply(data, function(x) {row.names(x) <- labels; x})
+    } else if (hasArg(output) & !hasArg(input)) {
+      data <- lapply(data, function(x) {x[,which(labels$V2 %in% output)]})
+      rownames <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {row.names(x) <- rownames; x})
+      labels <- labels[which(labels$V2 %in% output),]
+      labels <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- lapply(data, function(x) {colnames(x) <- labels; x})
+    } else if (hasArg(input) & hasArg(output)) {
+      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),
+                                          which(labels$V2 %in% output)]})
+      labels1 <- labels[which(labels$V2 %in% input),]
+      labels1 <- c(paste0(labels1[[2]], "_", labels1[[4]]))
+      labels2 <- labels[which(labels$V2 %in% output),]
+      labels2 <- c(paste0(labels2[[2]], "_", labels2[[4]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {row.names(x) <- labels1; x})
+      data <- lapply(data, function(x) {colnames(x) <- labels2; x})
+    } else {
+      colnames <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {colnames(x) <- colnames; x})
+      data <- lapply(data, function(x) {row.names(x) <- colnames; x})
     }
 
-    colnames <- c(paste0(labels[[2]], "_", labels[[4]]))
-    data <- lapply(data[min(year):max(year)],
-                   function(x) {colnames(x) <- colnames; x})
-    data <- lapply(data, function(x) {row.names(x) <- colnames; x})
 
     data <- lapply(data, function(x) {reshape2::melt(x, as.is = T)})
     data <- lapply(data, function(x) {tidyr::separate(x, Var1,
@@ -83,18 +122,32 @@ dyads <- function(year, data, country) {
   }
 
   if (type == "exiomatrix") {
-    labels <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"), header = F)
+    labels <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
     colnames(labels)[1] <- "V2"
 
-    if (hasArg(country)) {
-      data <- data[which(labels$V2 %in% country), which(labels$V2 %in% country)]
-      labels <- labels[which(labels$V2 %in% country),]
+    if (hasArg(input) & !hasArg(output)) {
+      data <- data[which(labels$V2 %in% input),]
+      colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
+      labels <- labels[which(labels$V2 %in% input),]
+      row.names(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
+    } else if (hasArg(output) & !hasArg(input)) {
+      data <- data[,which(labels$V2 %in% output)]
+      row.names(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
+      labels <- labels[which(labels$V2 %in% output),]
+      colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
+    } else if (hasArg(input) & hasArg(output)) {
+      data <- data[which(labels$V2 %in% input), which(labels$V2 %in% output)]
+      labels1 <- labels[which(labels$V2 %in% input),]
+      labels2 <- labels[which(labels$V2 %in% output),]
+      row.names(data) <- c(paste0(labels1[[1]], "_", labels1[[2]]))
+      colnames(data) <- c(paste0(labels2[[1]], "_", labels2[[2]]))
+    } else {
+      colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
+      row.names(data) <- colnames(data)
     }
 
-    colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]])); rm(labels)
-    row.names(data) <- colnames(data)
 
-    data <- reshape2::melt(data, as.is = T); gc() # as.is makes chr
+    data <- reshape2::melt(data, as.is = T) # as.is makes chr
     data <- tidyr::separate(data, Var1, into = c("C1", "S1"), sep = "_"); gc()
     data <- tidyr::separate(data, Var2, into = c("C2", "S2"), sep = "_"); gc()
 
@@ -107,19 +160,42 @@ dyads <- function(year, data, country) {
     labels <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
     colnames(labels)[1] <- "V2"
 
-    if (hasArg(country)) {
-      data <- lapply(data, function(x) {x[which(labels$V2 %in% country),
-                                          which(labels$V2 %in% country)]})
-      labels <- labels[which(labels$V2 %in% country),]
+
+    if (hasArg(input) & !hasArg(output)) {
+      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),]})
+      colnames <- c(paste0(labels[[1]], "_", labels[[2]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {colnames(x) <- colnames; x})
+      labels <- labels[which(labels$V2 %in% input),]
+      labels <- c(paste0(labels[[1]], "_", labels[[2]]))
+      data <- lapply(data, function(x) {row.names(x) <- labels; x})
+    } else if (hasArg(output) & !hasArg(input)) {
+      data <- lapply(data, function(x) {x[,which(labels$V2 %in% output)]})
+      rownames <- c(paste0(labels[[1]], "_", labels[[2]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {row.names(x) <- rownames; x})
+      labels <- labels[which(labels$V2 %in% output),]
+      labels <- c(paste0(labels[[1]], "_", labels[[2]]))
+      data <- lapply(data, function(x) {colnames(x) <- labels; x})
+    } else if (hasArg(input) & hasArg(output)) {
+      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),
+                                          which(labels$V2 %in% output)]})
+      labels1 <- labels[which(labels$V2 %in% input),]
+      labels1 <- c(paste0(labels1[[1]], "_", labels1[[2]]))
+      labels2 <- labels[which(labels$V2 %in% output),]
+      labels2 <- c(paste0(labels2[[1]], "_", labels2[[2]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {row.names(x) <- labels1; x})
+      data <- lapply(data, function(x) {colnames(x) <- labels2; x})
+    } else {
+      colnames <- c(paste0(labels[[1]], "_", labels[[2]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {colnames(x) <- colnames; x})
+      data <- lapply(data, function(x) {row.names(x) <- colnames; x})
     }
 
-    colnames <- c(paste0(labels[[1]], "_", labels[[2]])); rm(labels)
-    data <- lapply(data[min(year):max(year)],
-                   function(x) {colnames(x) <- colnames; x})
-    data <- lapply(data, function(x) {row.names(x) <- colnames; x}); rm(colnames); gc()
 
     data <- lapply(data, function(x) {reshape2::melt(x, as.is = T)}); gc()
-
     data <- lapply(data, function(x) {tidyr::separate(x, Var1,
                                                       into = c("C1", "S1"), sep = "_")}); gc()
     data <- lapply(data, function(x) {tidyr::separate(x, Var2,
@@ -134,5 +210,4 @@ dyads <- function(year, data, country) {
   return(final); gc()
 
 }
-
 

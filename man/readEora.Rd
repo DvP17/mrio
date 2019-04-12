@@ -12,6 +12,9 @@ readEora(year, indicator)
 \item{indicator}{Numeric for the row number of the corresponding
 indicator}
 }
+\value{
+Matrix
+}
 \description{
 Load Eora data and return a matrix from an environmental indicator.
 }

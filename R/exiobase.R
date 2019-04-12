@@ -8,7 +8,7 @@
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
 #'
-#' @return None
+#' @return Matrix
 #'
 #' @examples readExio(year = 1995, indicator = 200)
 #'
@@ -98,8 +98,7 @@ readExio <- function(year, indicator) {
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
 #'
-#' @return Vector of numerics representing the chosen years
-#' @return Numerics representing the chosen indicator
+#' @return Matrix or list
 #'
 #' @examples exioloop(years = 1995:2000, indicator = 200)
 #'

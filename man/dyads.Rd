@@ -11,10 +11,12 @@ dyads(year, data, country)
 
 \item{data}{Data object/ matrix that was created before}
 
-\item{country}{String or character vector for corresponding country/ies}
+\item{input}{String or character vector for input country/ies}
+
+\item{output}{String or character vector for output country/ies}
 }
 \value{
-None
+data.frame
 }
 \description{
 Matrices and list with matrices will be transformed into
@@ -24,6 +26,6 @@ Note that high RAM is required to execute this function for all
 countries especially for Exiobase and larger time frames.
 }
 \examples{
-dyads(year = 1995:1996, dataobject, country = c("DEU", "CHN"))
+dyads(year = 1995:1996, dataobject, output = c("DEU", "CHN"))
 
 }

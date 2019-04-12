@@ -13,7 +13,7 @@ readExio(year, indicator)
 indicator}
 }
 \value{
-None
+Matrix
 }
 \description{
 Load EXIOBASE data and return a matrix from an environmental indicator.

@@ -8,6 +8,8 @@
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
 #'
+#' @return Matrix
+#'
 #' @examples readEora(year = 1995, indicator = 200)
 #'
 #' @export
@@ -91,8 +93,7 @@ readEora <- function(year, indicator) {
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
 #'
-#' @return Vector of numerics representing the chosen years
-#' @return Numerics representing the chosen indicator
+#' @return Matrix or list
 #'
 #' @examples eoraloop(years = 1995:2000, indicator = 200)
 #'

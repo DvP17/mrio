@@ -13,9 +13,7 @@ eoraloop(years, indicator)
 indicator}
 }
 \value{
-Vector of numerics representing the chosen years
-
-Numerics representing the chosen indicator
+Matrix or list
 }
 \description{
 Load Eora data and return a list of matrices from an environmental

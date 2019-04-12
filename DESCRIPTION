@@ -1,14 +1,15 @@
 Package: mrio
 Type: Package
 Title: Work with Multiregional Input-Output Tables
-Version: 0.0.1
+Version: 0.0.2
 Author: DvP17
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Maintainer: DvP17 <yourself@somewhere.net>
+Description: Work with the MRIO data bases Eora and Exiobase and create
+    matrices for environmental extensions. Extract dyadic data.frames from
+    these matrices.
+License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
 Imports:
   bit64 (>= 0.9-7),
   data.table (>= 1.12.0),
