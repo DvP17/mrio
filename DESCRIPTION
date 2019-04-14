@@ -4,7 +4,7 @@ Title: Work with Multiregional Input-Output Tables
 Version: 0.0.2
 Author: DvP17
 Maintainer: <dvp17@protonmail.ch>
-Description: Work with MRIO data bases from Eora and Exiobase and create
+Description: Work with MRIO data bases as Eora and Exiobase and create
     matrices for environmental extensions. Extract dyadic data.frames from
     these matrices.
 License: GPL-3
