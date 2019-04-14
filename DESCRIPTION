@@ -3,7 +3,7 @@ Type: Package
 Title: Work with Multiregional Input-Output Tables
 Version: 0.0.2
 Author: DvP17
-Maintainer: DvP17 <yourself@somewhere.net>
+Maintainer: <dvp17@protonmail.ch>
 Description: Work with the MRIO data bases Eora and Exiobase and create
     matrices for environmental extensions. Extract dyadic data.frames from
     these matrices.
