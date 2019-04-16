@@ -11,6 +11,8 @@ eoraloop(years, indicator)
 
 \item{indicator}{Numeric for the row number of the corresponding
 indicator}
+
+\item{method}{Character string for method to calculate matrix}
 }
 \value{
 Matrix or list

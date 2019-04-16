@@ -21,46 +21,108 @@
 dyads <- function(year, data, input, output) {
 
   # Evaluate data input
-  if (!is.list(data)) {
-    if (dim(data) == rep(4915, 2)) {type <- "eoramatrix"}
-    else if (dim(data) == rep(7987, 2)) {type <- "exiomatrix"}
+  if (!is.list(data)) { # for matrices
+    if (all(dim(data) == rep(4915, 2))) {type <- "eoramatrix"}
+    else if (all(dim(data) == c(4915, 1140))) {type <- "eoramatrixECC"}
+    else if (all(dim(data) == rep(7987, 2))) {type <- "exiomatrix"}
+    else if (all(dim(data) == c(7987, 343))) {type <- "exiomatrixECC"}
     else {cat("Data input has wrong number of dimensions.")}
-  }
-  else if (is.list(data)) {
-    if (dim(data[[min(year)]]) == rep(4915, 2)) {type <- "eoralist"}
-    else if (dim(data[[min(year)]]) == rep(7987, 2)) {type <- "exiolist"}
+  } else if (is.list(data)) { # for lists
+    if (all(dim(data[[min(year)]]) == rep(4915, 2))) {type <- "eoralist"}
+    else if (all(dim(data[[min(year)]]) == c(4915, 1140))) {type <- "eoralistECC"}
+    else if (all(dim(data[[min(year)]]) == rep(7987, 2))) {type <- "exiolist"}
+    else if (all(dim(data[[min(year)]]) == c(7987, 343))) {type <- "exiolistECC"}
     else {cat("Data input has wrong number of dimensions.")}
-  }
-  else {cat("Data input must be matrix or list.")
+  } else {cat("Data input must be matrix or list.")
   }
 
-  # Main
-  if (type == "eoramatrix") {
-    labels <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
-                         header = F)
+  # Function for label assignment on matrix input
+  labelingmatrix <- function(a, b, input, output) {
 
     if (hasArg(input) & !hasArg(output)) {
-      data <- data[which(labels$V2 %in% input),]
-      colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
-      labels <- labels[which(labels$V2 %in% input),]
-      row.names(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- data[which(rowlab$V2 %in% input),]
+      rowlab <- rowlab[which(rowlab$V2 %in% input),]
+      row.names(data) <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      colnames(data) <- c(paste0(collab[[a]], "_", collab[[b]]))
     } else if (hasArg(output) & !hasArg(input)) {
-      data <- data[,which(labels$V2 %in% output)]
-      row.names(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
-      labels <- labels[which(labels$V2 %in% output),]
-      colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
+      data <- data[,which(collab$V2 %in% output)]
+      row.names(data) <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      collab <- collab[which(collab$V2 %in% output),]
+      colnames(data) <- c(paste0(collab[[a]], "_", collab[[b]]))
     } else if (hasArg(input) & hasArg(output)) {
-      data <- data[which(labels$V2 %in% input), which(labels$V2 %in% output)]
-      labels1 <- labels[which(labels$V2 %in% input),]
-      labels2 <- labels[which(labels$V2 %in% output),]
-      row.names(data) <- c(paste0(labels1[[2]], "_", labels1[[4]]))
-      colnames(data) <- c(paste0(labels2[[2]], "_", labels2[[4]]))
+      data <- data[which(rowlab$V2 %in% input), which(collab$V2 %in% output)]
+      rowlab <- rowlab[which(rowlab$V2 %in% input),]
+      row.names(data) <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      collab <- collab[which(collab$V2 %in% output),]
+      colnames(data) <- c(paste0(collab[[a]], "_", collab[[b]]))
     } else {
-      colnames(data) <- c(paste0(labels[[2]], "_", labels[[4]]))
-      row.names(data) <- colnames(data)
+      row.names(data) <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      colnames(data) <- c(paste0(collab[[a]], "_", collab[[b]]))
     }
 
+    return(data)
 
+  }
+
+  # Function for label assignment on list input
+  labelinglist <- function(a, b, input, output) {
+
+    if (hasArg(input) & !hasArg(output)) {
+      data <- lapply(data, function(x) {x[which(rowlab$V2 %in% input),]})
+      rowlab <- rowlab[which(rowlab$V2 %in% input),]
+      rowlab <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      data <- lapply(data, function(x) {row.names(x) <- rowlab; x})
+      collab <- c(paste0(collab[[a]], "_", collab[[b]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {colnames(x) <- collab; x})
+    } else if (hasArg(output) & !hasArg(input)) {
+      data <- lapply(data, function(x) {x[,which(collab$V2 %in% output)]})
+      rowlab <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {row.names(x) <- rowlab; x})
+      collab <- collab[which(collab$V2 %in% output),]
+      collab <- c(paste0(collab[[a]], "_", collab[[b]]))
+      data <- lapply(data, function(x) {colnames(x) <- collab; x})
+    } else if (hasArg(input) & hasArg(output)) {
+      data <- lapply(data, function(x) {x[which(rowlab$V2 %in% input),
+                                          which(collab$V2 %in% output)]})
+      rowlab <- rowlab[which(rowlab$V2 %in% input),]
+      rowlab <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      collab <- collab[which(collab$V2 %in% output),]
+      collab <- c(paste0(collab[[a]], "_", collab[[b]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {row.names(x) <- rowlab; x})
+      data <- lapply(data, function(x) {colnames(x) <- collab; x})
+    } else {
+      collab <- c(paste0(collab[[a]], "_", collab[[b]]))
+      data <- lapply(data[min(year):max(year)],
+                     function(x) {colnames(x) <- collab; x})
+      data <- lapply(data, function(x) {row.names(x) <- collab; x})
+    }
+
+    return(data)
+
+  }
+
+
+  # MAIN
+  if (grepl("eoramatrix", type)) {
+
+    if (type == "eoramatrix") {
+      collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
+                           header = F)
+      rowlab <- collab
+    } else if (type == "eoramatrixECC") {
+      collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_FD.txt"),
+                           header = F)
+      rowlab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
+                           header = F)
+    }
+
+    # Call labeling matrix function
+    data <- labelingmatrix(2, 4, input, output)
+
+    # Form dyads
     data <- reshape2::melt(data, as.is = T) # as.is makes chr
     data <- tidyr::separate(data, Var1, into = c("C1", "S1"), sep = "_")
     data <- tidyr::separate(data, Var2, into = c("C2", "S2"), sep = "_")
@@ -70,45 +132,23 @@ dyads <- function(year, data, input, output) {
 
   }
 
-  if (type == "eoralist") {
-    labels <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
-                         header = F)
+  if (grepl("eoralist", type)) {
 
-
-    if (hasArg(input) & !hasArg(output)) {
-      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),]})
-      colnames <- c(paste0(labels[[2]], "_", labels[[4]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {colnames(x) <- colnames; x})
-      labels <- labels[which(labels$V2 %in% input),]
-      labels <- c(paste0(labels[[2]], "_", labels[[4]]))
-      data <- lapply(data, function(x) {row.names(x) <- labels; x})
-    } else if (hasArg(output) & !hasArg(input)) {
-      data <- lapply(data, function(x) {x[,which(labels$V2 %in% output)]})
-      rownames <- c(paste0(labels[[2]], "_", labels[[4]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {row.names(x) <- rownames; x})
-      labels <- labels[which(labels$V2 %in% output),]
-      labels <- c(paste0(labels[[2]], "_", labels[[4]]))
-      data <- lapply(data, function(x) {colnames(x) <- labels; x})
-    } else if (hasArg(input) & hasArg(output)) {
-      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),
-                                          which(labels$V2 %in% output)]})
-      labels1 <- labels[which(labels$V2 %in% input),]
-      labels1 <- c(paste0(labels1[[2]], "_", labels1[[4]]))
-      labels2 <- labels[which(labels$V2 %in% output),]
-      labels2 <- c(paste0(labels2[[2]], "_", labels2[[4]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {row.names(x) <- labels1; x})
-      data <- lapply(data, function(x) {colnames(x) <- labels2; x})
-    } else {
-      colnames <- c(paste0(labels[[2]], "_", labels[[4]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {colnames(x) <- colnames; x})
-      data <- lapply(data, function(x) {row.names(x) <- colnames; x})
+    if (type == "eoralist") {
+      collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
+                           header = F)
+      rowlab <- collab
+    } else if (type == "eoralistECC") {
+      collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_FD.txt"),
+                           header = F)
+      rowlab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
+                           header = F)
     }
 
+    # Call labeling list function
+    data <- labelinglist(2, 4, input, output)
 
+    # Form dyads
     data <- lapply(data, function(x) {reshape2::melt(x, as.is = T)})
     data <- lapply(data, function(x) {tidyr::separate(x, Var1,
                                                       into = c("C1", "S1"), sep = "_")})
@@ -121,32 +161,23 @@ dyads <- function(year, data, input, output) {
 
   }
 
-  if (type == "exiomatrix") {
-    labels <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
-    colnames(labels)[1] <- "V2"
+  if (grepl("exiomatrix", type)) {
 
-    if (hasArg(input) & !hasArg(output)) {
-      data <- data[which(labels$V2 %in% input),]
-      colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
-      labels <- labels[which(labels$V2 %in% input),]
-      row.names(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
-    } else if (hasArg(output) & !hasArg(input)) {
-      data <- data[,which(labels$V2 %in% output)]
-      row.names(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
-      labels <- labels[which(labels$V2 %in% output),]
-      colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
-    } else if (hasArg(input) & hasArg(output)) {
-      data <- data[which(labels$V2 %in% input), which(labels$V2 %in% output)]
-      labels1 <- labels[which(labels$V2 %in% input),]
-      labels2 <- labels[which(labels$V2 %in% output),]
-      row.names(data) <- c(paste0(labels1[[1]], "_", labels1[[2]]))
-      colnames(data) <- c(paste0(labels2[[1]], "_", labels2[[2]]))
-    } else {
-      colnames(data) <- c(paste0(labels[[1]], "_", labels[[2]]))
-      row.names(data) <- colnames(data)
+    if (type == "exiomatrix") {
+      collab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
+      colnames(collab)[1] <- "V2"
+      rowlab <- collab
+    } else if (type == "exiomatrixECC") {
+      collab <- read.delim(paste0("IOT_", min(year), "_ixi/Y.txt"), nrows = 1)
+      collab <- data.frame(V2 = substr(colnames(collab)[3:ncol(collab)], 1, 2),
+                           V3 = unlist(collab[1, 3:ncol(collab)]))
+      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
     }
 
+    # Call labeling matrix
+    data <- labelingmatrix(1, 2, input, output)
 
+    # Form dyads
     data <- reshape2::melt(data, as.is = T) # as.is makes chr
     data <- tidyr::separate(data, Var1, into = c("C1", "S1"), sep = "_"); gc()
     data <- tidyr::separate(data, Var2, into = c("C2", "S2"), sep = "_"); gc()
@@ -156,54 +187,32 @@ dyads <- function(year, data, input, output) {
 
   }
 
-  if (type == "exiolist") {
-    labels <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
-    colnames(labels)[1] <- "V2"
+  if (grepl("exiolist", type)) {
 
-
-    if (hasArg(input) & !hasArg(output)) {
-      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),]})
-      colnames <- c(paste0(labels[[1]], "_", labels[[2]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {colnames(x) <- colnames; x})
-      labels <- labels[which(labels$V2 %in% input),]
-      labels <- c(paste0(labels[[1]], "_", labels[[2]]))
-      data <- lapply(data, function(x) {row.names(x) <- labels; x})
-    } else if (hasArg(output) & !hasArg(input)) {
-      data <- lapply(data, function(x) {x[,which(labels$V2 %in% output)]})
-      rownames <- c(paste0(labels[[1]], "_", labels[[2]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {row.names(x) <- rownames; x})
-      labels <- labels[which(labels$V2 %in% output),]
-      labels <- c(paste0(labels[[1]], "_", labels[[2]]))
-      data <- lapply(data, function(x) {colnames(x) <- labels; x})
-    } else if (hasArg(input) & hasArg(output)) {
-      data <- lapply(data, function(x) {x[which(labels$V2 %in% input),
-                                          which(labels$V2 %in% output)]})
-      labels1 <- labels[which(labels$V2 %in% input),]
-      labels1 <- c(paste0(labels1[[1]], "_", labels1[[2]]))
-      labels2 <- labels[which(labels$V2 %in% output),]
-      labels2 <- c(paste0(labels2[[1]], "_", labels2[[2]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {row.names(x) <- labels1; x})
-      data <- lapply(data, function(x) {colnames(x) <- labels2; x})
-    } else {
-      colnames <- c(paste0(labels[[1]], "_", labels[[2]]))
-      data <- lapply(data[min(year):max(year)],
-                     function(x) {colnames(x) <- colnames; x})
-      data <- lapply(data, function(x) {row.names(x) <- colnames; x})
+    if (type == "exiolist") {
+      collab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
+      colnames(collab)[1] <- "V2"
+      rowlab <- collab
+    } else if (type == "exiolistECC") {
+      collab <- read.delim(paste0("IOT_", min(year), "_ixi/Y.txt"), nrows = 1)
+      collab <- data.frame(V2 = substr(colnames(collab)[3:ncol(collab)], 1, 2),
+                           V3 = unlist(collab[1, 3:ncol(collab)]))
+      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
     }
 
+    # Call labeling list function
+    data <- labelinglist(1, 2, input, output)
 
-    data <- lapply(data, function(x) {reshape2::melt(x, as.is = T)}); gc()
+    # Form dyads
+    data <- lapply(data, function(x) {reshape2::melt(x, as.is = T)})
     data <- lapply(data, function(x) {tidyr::separate(x, Var1,
-                                                      into = c("C1", "S1"), sep = "_")}); gc()
+                                                      into = c("C1", "S1"), sep = "_")})
     data <- lapply(data, function(x) {tidyr::separate(x, Var2,
-                                                      into = c("C2", "S2"), sep = "_")}); gc()
+                                                      into = c("C2", "S2"), sep = "_")})
 
     # data <- lapply(data, function(x) {x[order(x$C1),]})
-    data <- Map(cbind, year = as.list(year), data); gc()
-    final <- data.table::rbindlist(data); rm(data); gc()
+    data <- Map(cbind, year = as.list(year), data)
+    final <- data.table::rbindlist(data); rm(data)
 
   }
 

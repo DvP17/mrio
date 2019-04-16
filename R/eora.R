@@ -7,13 +7,14 @@
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
+#' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix
 #'
 #' @examples readEora(year = 1995, indicator = 200)
 #'
 #' @export
-readEora <- function(year, indicator) {
+readEora <- function(year, indicator, method) {
 
   # define path
   path <- c(
@@ -72,8 +73,14 @@ readEora <- function(year, indicator) {
   L <- solve(I - A)
 
 
-  emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
-    matrix(rep(rowSums(FD), length(E)), nrow = length(E))
+  if (!hasArg(method)) {
+    emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
+      matrix(rep(rowSums(FD), length(E)), nrow = length(E))
+  } else if (method == "demand-production") {
+    emissionmatrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*%
+      FD
+  }
+
 
   # return emissionmatrixyoplay
   return(emissionmatrix)
@@ -92,13 +99,14 @@ readEora <- function(year, indicator) {
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
+#' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix or list
 #'
 #' @examples eoraloop(years = 1995:2000, indicator = 200)
 #'
 #' @export
-eoraloop <- function(years, indicator) {
+eoraloop <- function(years, indicator, method) {
 
   # Test duration and ask for choice
   sysspeed <- system.time(for (i in 1:999999) {y <- i ^ i})
@@ -120,7 +128,7 @@ eoraloop <- function(years, indicator) {
     emissionall <- list()
     for (i in years) {
 
-      emissionall[[i]] <- readEora(i, indicator)
+      emissionall[[i]] <- readEora(i, indicator, method)
 
       # progress bar
       setTxtProgressBar(txtProgressBar(min = min(years) - 1,

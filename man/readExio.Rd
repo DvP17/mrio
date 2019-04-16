@@ -11,6 +11,8 @@ readExio(year, indicator)
 
 \item{indicator}{Numeric for the row number of the corresponding
 indicator}
+
+\item{method}{Character string for method to calculate matrix}
 }
 \value{
 Matrix
@@ -19,6 +21,7 @@ Matrix
 Load EXIOBASE data and return a matrix from an environmental indicator.
 }
 \examples{
-readExio(year = 1995, indicator = 200)
+readExio(year = 1995, indicator = 200,
+ method = "demand-production")
 
 }

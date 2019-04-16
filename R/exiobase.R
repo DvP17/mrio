@@ -7,13 +7,15 @@
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
+#' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix
 #'
-#' @examples readExio(year = 1995, indicator = 200)
+#' @examples readExio(year = 1995, indicator = 200,
+#'  method = "demand-production")
 #'
 #' @export
-readExio <- function(year, indicator) {
+readExio <- function(year, indicator, method) {
 
   # define path
   path <- c(
@@ -76,9 +78,14 @@ readExio <- function(year, indicator) {
   E[which(is.infinite(E))] <- 0 # remove Infinites
   E[which(E < 0)] <- 0 # remove Negatives
 
-  emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
-    matrix(rep(rowSums(FD), length(E)), nrow = length(E))
-  # cat("Emission matrix has been generated.\n")
+
+  if (!hasArg(method)) {
+    emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
+      matrix(rep(rowSums(FD), length(E)), nrow = length(E))
+  } else if (method == "demand-production") {
+    emissionmatrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*% FD
+  }
+
 
   # return emissionmatrixyoplay
   return(emissionmatrix)
@@ -97,13 +104,14 @@ readExio <- function(year, indicator) {
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator
+#' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix or list
 #'
 #' @examples exioloop(years = 1995:2000, indicator = 200)
 #'
 #' @export
-exioloop <- function(years, indicator) {
+exioloop <- function(years, indicator, method) {
 
   # Test duration and ask for choice
   sysspeed <- system.time(for (i in 1:999999) {y <- i ^ i})
@@ -125,7 +133,7 @@ exioloop <- function(years, indicator) {
     emissionall <- list()
     for (i in years) {
 
-      emissionall[[i]] <- readExio(i, indicator)
+      emissionall[[i]] <- readExio(i, indicator, method)
 
       # progress bar
       setTxtProgressBar(txtProgressBar(min = min(years) - 1,
