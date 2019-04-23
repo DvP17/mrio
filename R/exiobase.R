@@ -22,8 +22,9 @@
 #'
 #' @return Produces a matrix
 #'
-#' @examples readExio(year = 1995, indicator = 200,
-#'  method = "demand-production")
+#' @examples readExio(year = 2000, indicator = 200)
+#' readExio(year = 1995, indicator = "cc", method = "no-double-pd",
+#' target = "CHN")
 #'
 #' @export
 readExio <- function(year, indicator, method, target) {
@@ -159,6 +160,8 @@ readExio <- function(year, indicator, method, target) {
 #' @return Matrix or list
 #'
 #' @examples exioloop(years = 1995:2000, indicator = 200)
+#' exioloop(year = 1995:1997, indicator = "cc", method = "pd",
+#' target = "USA")
 #'
 #' @export
 exioloop <- function(years, indicator, method, target) {

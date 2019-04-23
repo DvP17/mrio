@@ -38,5 +38,7 @@ indicator ocer a period of time.
 }
 \examples{
 exioloop(years = 1995:2000, indicator = 200)
+exioloop(year = 1995:1997, indicator = "cc", method = "pd",
+target = "USA")
 
 }

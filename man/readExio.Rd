@@ -36,7 +36,8 @@ Produces a matrix
 Load EXIOBASE data and return a matrix from an environmental indicator.
 }
 \examples{
-readExio(year = 1995, indicator = 200,
- method = "demand-production")
+readExio(year = 2000, indicator = 200)
+readExio(year = 1995, indicator = "cc", method = "no-double-pd",
+target = "CHN")
 
 }
