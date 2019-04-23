@@ -6,10 +6,21 @@
 #'
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
-#' indicator
+#' indicator or character string for characterization factor
+#' * "cc" for **c**limate **c**hange impacts
+#' * "ws" for **w**ater **s**tress
+#' * "lu" for **l**and **u**se
 #' @param method Character string for method to calculate matrix
+#' * "pd" for **p**roduction to **d**emand matrix
+#' * "no-double-pt" for **p**roduction to target **d**emand matrix
+#' * "no-double-ts" for **t**arget to final **s**upply matrix
+#' * "no-double-td" for **t**arget to final **d**emand matrix
+#' * "no-double-pd" for **p**roduction to final **d**emand matrix
+#' @param target Three letter country code for corresponding target
+#' country if double counting is prevented
+#' @md
 #'
-#' @return Matrix
+#' @return Produces a matrix
 #'
 #' @examples readExio(year = 1995, indicator = 200,
 #'  method = "demand-production")
@@ -131,8 +142,19 @@ readExio <- function(year, indicator, method, target) {
 #'
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
-#' indicator
+#' indicator or character string for characterization factor
+#' * "cc" for **c**limate **c**hange impacts
+#' * "ws" for **w**ater **s**tress
+#' * "lu" for **l**and **u**se
 #' @param method Character string for method to calculate matrix
+#' * "pd" for **p**roduction to **d**emand matrix
+#' * "no-double-pt" for **p**roduction to target **d**emand matrix
+#' * "no-double-ts" for **t**arget to final **s**upply matrix
+#' * "no-double-td" for **t**arget to final **d**emand matrix
+#' * "no-double-pd" for **p**roduction to final **d**emand matrix
+#' @param target Three letter country code for corresponding target
+#' country if double counting is prevented
+#' @md
 #'
 #' @return Matrix or list
 #'

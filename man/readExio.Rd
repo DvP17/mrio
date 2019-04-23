@@ -10,12 +10,27 @@ readExio(year, indicator)
 \item{year}{Numeric for the respective year}
 
 \item{indicator}{Numeric for the row number of the corresponding
-indicator}
+indicator or character string for characterization factor
+\itemize{
+\item "cc" for \strong{c}limate \strong{c}hange impacts
+\item "ws" for \strong{w}ater \strong{s}tress
+\item "lu" for \strong{l}and \strong{u}se
+}}
 
-\item{method}{Character string for method to calculate matrix}
+\item{method}{Character string for method to calculate matrix
+\itemize{
+\item "pd" for \strong{p}roduction to \strong{d}emand matrix
+\item "no-double-pt" for \strong{p}roduction to target \strong{d}emand matrix
+\item "no-double-ts" for \strong{t}arget to final \strong{s}upply matrix
+\item "no-double-td" for \strong{t}arget to final \strong{d}emand matrix
+\item "no-double-pd" for \strong{p}roduction to final \strong{d}emand matrix
+}}
+
+\item{target}{Three letter country code for corresponding target
+country if double counting is prevented}
 }
 \value{
-Matrix
+Produces a matrix
 }
 \description{
 Load EXIOBASE data and return a matrix from an environmental indicator.
