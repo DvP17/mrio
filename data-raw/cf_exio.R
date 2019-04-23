@@ -10,4 +10,4 @@ cf_cc <- c(rep(0, 23), 1, 36.8, 298, 0, 0, 0, 1.57, rep(0, 7), 4.23, rep(0, 29),
            rep(0, 235), 26100, 1, 1, 36.8, 1, 0, 298, rep(0, 5), 36.8, 1.57, 0,
            1, rep(0, 665))
 cf_exio <- cbind(cf, cf_cc)
-usethis::use_data(cf_exio)
+usethis::use_data(cf_exio, overwrite = TRUE)

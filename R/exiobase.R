@@ -15,13 +15,14 @@
 #'  method = "demand-production")
 #'
 #' @export
-readExio <- function(year, indicator, method) {
+readExio <- function(year, indicator, method, target) {
 
   # define path
   path <- c(
     paste0("IOT_", year, "_ixi/A.txt"),
     paste0("IOT_", year, "_ixi/Y.txt"),
-    paste0("IOT_", year, "_ixi/satellite/F.txt")
+    paste0("IOT_", year, "_ixi/satellite/F.txt"),
+    paste0("IOT_", year, "_ixi/satellite/F_hh.txt")
   )
 
   # read matrices
@@ -34,61 +35,88 @@ readExio <- function(year, indicator, method) {
   Q <- as.matrix(data.table::fread(path[3], select = 2:7988, skip = 2,
                                    header = F))
 
+  Q_hh <- as.matrix(data.table::fread(path[4], select = 2:344, skip = 2,
+                                      header = F))
+
   # satellite indicators
-  if (indicator < 7988) {
+  if (is.numeric(indicator)) {
+    E <- Q[indicator,]
 
-    Q <- Q[indicator,]
+  } else if (indicator == "cc") { # climate change
+    E <- t(mrio::cf_exio$cf_cc) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_cc) %*% Q_hh
 
+  } else if (indicator == "ws") { # water stress
+    E <- t(mrio::cf_exio$cf_ws) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_ws) %*% Q_hh
 
-  } else if (indicator == 7988) {
+  } else if (indicator == "lu") { # land use
 
-    # load characterization factors
-    CF <- data.table::fread("QH_EXIOlabel_CF.csv", select = 6)
-    Q <- Q[which(!is.na(CF)) + 23,] # +23 bc data starts 26 row minus head
+  } else if (indicator == "mf") { # material footprint
 
-    # weight by characterization factors
-    CF <- unlist(CF[which(!is.na(CF)),])
-    Q <- Q * matrix(rep(CF, ncol(Q)), ncol = ncol(Q))
+  } else if (indicator == "bwc") { # blue water consumption
 
-    # add indicators
-    Q <- colSums(Q)
-
-    # clean Q
-    Q[which(Q < 0)] <- 0
-
+  } else if (indicator == "ed") { # energy demand
 
   }
 
-  # cat("Matrices have been loaded.\n")
 
   # calculate emissionmatrix
   I <- diag(ncol(A))
 
   L <- solve(I - A)
 
-  # cat("Leontief inverse has been generated.\n")
-
   X <- L %*% FD
   xout <- as.matrix(rowSums(X))
   totalinput <- t(xout)
-  # cat("Total input and output have been generated.\n")
 
-  E <- Q / totalinput
+  E <- E / totalinput
   E[which(is.nan(E))] <- 0 # remove NaNs
   E[which(is.infinite(E))] <- 0 # remove Infinites
   E[which(E < 0)] <- 0 # remove Negatives
 
 
-  if (!hasArg(method)) {
-    emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
-      matrix(rep(rowSums(FD), length(E)), nrow = length(E))
-  } else if (method == "demand-production") {
-    emissionmatrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*% FD
+  # For no double counting
+  if (grepl("no-double", method)) {
+
+    # Constructing Index and calculating Leontief
+    collab <- read.delim(paste0("IOT_", year, "_ixi/unit.txt"))
+    index_t <- which(collab$region == target)
+    index_o <- which(collab$region != target)
+    I_new <- diag(length(index_o))
+    L_oo_dash <- solve(I_new - A[index_o, index_o])
+
+    X_t_wdc_C <- FD[index_t,] + A[index_t, index_o] %*%
+      L_oo_dash %*% FD[index_o,]
+
+    X_t_wdc_O <- matrix(0, nrow = length(index_t), ncol = length(index_o) + 1)
+    X_t_wdc_O[, 1] <- rowSums(FD[index_t,])
+    X_t_wdc_O[, 2:(length(index_o) + 1)] <- A[index_t, index_o] %*%
+      L_oo_dash %*% diag(rowSums(FD[index_o,]))
+
   }
 
 
-  # return emissionmatrixyoplay
-  return(emissionmatrix)
+  # Calculate final matrix
+  if (!hasArg(method)) {
+    e_matrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
+      matrix(rep(rowSums(FD), length(E)), nrow = length(E))
+  } else if (method == "pd") {
+    e_matrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*% FD
+    e_matrix <- rbind(e_matrix, as.vector(E_hh))
+  } else if (method == "no-double-pt") { # between production (rows -> Labels_Production) and target (column --> Labels_Target)
+    e_matrix <- diag(as.vector(E)) %*% L[, index_t] %*% diag(rowSums(X_t_wdc_C))
+  } else if (method == "no-double-ts") { # between target (rows -> Labels_Target) and final supply (column --> Labels_FinalSupply)
+    e_matrix <- diag(as.vector(E %*% L[, index_t])) %*% X_t_wdc_O
+  } else if (method == "no-double-td") { # between target (rows -> Labels_Target) and final demand (column --> Labels_FinalDemand)
+    e_matrix <- diag(as.vector(E %*% L[, index_t])) %*% X_t_wdc_C
+  } else if (method == "no-double-pd") { # between production (rows -> Labels_Production) and final demand (column -->Labels_FinalDemand)
+    e_matrix <- diag(as.vector(E)) %*% L[, index_t] %*% X_t_wdc_C
+  }
+
+
+  # return e_matrix
+  return(e_matrix)
 
 }
 
@@ -111,7 +139,7 @@ readExio <- function(year, indicator, method) {
 #' @examples exioloop(years = 1995:2000, indicator = 200)
 #'
 #' @export
-exioloop <- function(years, indicator, method) {
+exioloop <- function(years, indicator, method, target) {
 
   # Test duration and ask for choice
   sysspeed <- system.time(for (i in 1:999999) {y <- i ^ i})
@@ -133,7 +161,7 @@ exioloop <- function(years, indicator, method) {
     emissionall <- list()
     for (i in years) {
 
-      emissionall[[i]] <- readExio(i, indicator, method)
+      emissionall[[i]] <- readExio(i, indicator, method, target)
 
       # progress bar
       setTxtProgressBar(txtProgressBar(min = min(years) - 1,
