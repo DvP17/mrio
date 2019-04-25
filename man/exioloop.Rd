@@ -4,7 +4,7 @@
 \alias{exioloop}
 \title{Construct list of matrices for specific environmental indicator of EXIOBASE}
 \usage{
-exioloop(years, indicator)
+exioloop(years, indicator, method, target)
 }
 \arguments{
 \item{years}{Numeric vector for the respective year}

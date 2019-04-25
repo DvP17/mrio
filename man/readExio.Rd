@@ -4,7 +4,7 @@
 \alias{readExio}
 \title{Construct matrix for specific environmental indicator of EXIOBASE}
 \usage{
-readExio(year, indicator)
+readExio(year, indicator, method, target)
 }
 \arguments{
 \item{year}{Numeric for the respective year}

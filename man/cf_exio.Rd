@@ -3,12 +3,13 @@
 \docType{data}
 \name{cf_exio}
 \alias{cf_exio}
-\title{Data for Characterization Factors on Climate Change}
-\format{A data frame with ...}
+\title{Data for Characterization Factors for EXIOBASE}
+\format{A data frame with ... columns and ... rows}
 \usage{
 cf_exio
 }
 \description{
-This is data on the characterization factors for climate change.
+This is data on the characterization factors for climate change, water
+stress, ... for EXIOBASE.
 }
 \keyword{datasets}
