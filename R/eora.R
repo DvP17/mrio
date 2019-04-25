@@ -6,7 +6,10 @@
 #'
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
-#' indicator
+#' indicator or character string for characterization factor
+#' * "cc" for **c**limate **c**hange impacts
+#' * "ws" for **w**ater **s**tress
+#' * "lu" for **l**and **u**se
 #' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix
@@ -14,13 +17,14 @@
 #' @examples readEora(year = 1995, indicator = 200)
 #'
 #' @export
-readEora <- function(year, indicator, method) {
+readEora <- function(year, indicator, method, target) {
 
   # define path
   path <- c(
     paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_T.txt"),
     paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_FD.txt"),
-    paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_Q.txt")
+    paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_Q.txt"),
+    paste0("Eora26_", year, "_bp/", "Eora26_", year, "_bp_QY.txt")
   )
 
   # load data
@@ -30,28 +34,27 @@ readEora <- function(year, indicator, method) {
 
   Q <- as.matrix(data.table::fread(path[3], header = F))
 
+  Q_hh <- as.matrix(data.table::fread(path[4], header = F))
+
   # satellite indicators
-  if (indicator <= 4915) {
+  if (is.numeric(indicator)) {
+    E <- Q[indicator,]
 
-    Q <- Q[indicator,]
+  } else if (indicator == "cc") { # climate change
+    E <- t(mrio::cf_eora$cf_cc) %*% Q
+    E_hh <- t(mrio::cf_eora$cf_cc) %*% Q_hh
 
+  } else if (indicator == "ws") { # water stress
+    E <- t(mrio::cf_eora$cf_ws) %*% Q
+    E_hh <- t(mrio::cf_eora$cf_ws) %*% Q_hh
 
-  } else if (indicator > 4915) {
+  } else if (indicator == "lu") { # land use
 
-    # load characterization factors
-    CF <- data.table::fread("QH_EXIOlabel_CF.csv", select = 6)
-    Q <- Q[which(!is.na(CF)) + 23,] # +23 bc data starts 26 row minus head
+  } else if (indicator == "mf") { # material footprint
 
-    # weight by characterization factors
-    CF <- unlist(CF[which(!is.na(CF)),])
-    Q <- Q * matrix(rep(CF, ncol(Q)), ncol = ncol(Q))
+  } else if (indicator == "bwc") { # blue water consumption
 
-    # add indicators
-    Q <- colSums(Q)
-
-    # clean Q
-    Q[which(Q < 0)] <- 0
-
+  } else if (indicator == "ed") { # energy demand
 
   }
 
@@ -59,7 +62,7 @@ readEora <- function(year, indicator, method) {
   xout <- rowSums(T) + rowSums(FD)
   totalinput <- t(xout)
 
-  E <- Q / totalinput
+  E <- E / totalinput
   E[which(is.nan(E))] <- 0 # remove NaNs
   E[which(is.infinite(E))] <- 0 # remove Infinites
   E[which(E < 0)] <- 0 # remove Negatives
@@ -77,8 +80,7 @@ readEora <- function(year, indicator, method) {
     emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
       matrix(rep(rowSums(FD), length(E)), nrow = length(E))
   } else if (method == "demand-production") {
-    emissionmatrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*%
-      FD
+    emissionmatrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*% FD
   }
 
 
@@ -98,7 +100,10 @@ readEora <- function(year, indicator, method) {
 #'
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
-#' indicator
+#' indicator or character string for characterization factor
+#' * "cc" for **c**limate **c**hange impacts
+#' * "ws" for **w**ater **s**tress
+#' * "lu" for **l**and **u**se
 #' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix or list

@@ -10,7 +10,10 @@ eoraloop(years, indicator)
 \item{years}{Numeric vector for the respective year}
 
 \item{indicator}{Numeric for the row number of the corresponding
-indicator}
+indicator or character string for characterization factor
+* "cc" for **c**limate **c**hange impacts
+* "ws" for **w**ater **s**tress
+* "lu" for **l**and **u**se}
 
 \item{method}{Character string for method to calculate matrix}
 }
