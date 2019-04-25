@@ -2,7 +2,7 @@
 #'
 #' Load EXIOBASE data and return a matrix from an environmental indicator.
 #'
-#' @usage readExio(year, indicator)
+#' @usage readExio(year, indicator, method, target)
 #'
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
@@ -139,7 +139,7 @@ readExio <- function(year, indicator, method, target) {
 #' Load EXIOBASE data and return a list of matrices from an environmental
 #' indicator ocer a period of time.
 #'
-#' @usage exioloop(years, indicator)
+#' @usage exioloop(years, indicator, method, target)
 #'
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
