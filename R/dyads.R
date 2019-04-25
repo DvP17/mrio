@@ -97,7 +97,8 @@ dyads <- function(year, data, input, output) {
       collab <- c(paste0(collab[[a]], "_", collab[[b]]))
       data <- lapply(data[min(year):max(year)],
                      function(x) {colnames(x) <- collab; x})
-      data <- lapply(data, function(x) {row.names(x) <- collab; x})
+      rowlab <- c(paste0(rowlab[[a]], "_", rowlab[[b]]))
+      data <- lapply(data, function(x) {row.names(x) <- rowlab; x})
     }
 
     return(data)
