@@ -23,15 +23,17 @@ dyads <- function(year, data, input, output) {
   # Evaluate data input
   if (!is.list(data)) { # for matrices
     if (all(dim(data) == rep(4915, 2))) {type <- "eoramatrix"}
-    else if (all(dim(data) == c(4915, 1140))) {type <- "eoramatrixECC"}
+    else if (all(dim(data) == c(4915, 1140))) {type <- "eoramatrixPD"}
     else if (all(dim(data) == rep(7987, 2))) {type <- "exiomatrix"}
-    else if (all(dim(data) == c(7987, 343))) {type <- "exiomatrixECC"}
+    else if (all(dim(data) == c(7987, 343))) {type <- "exiomatrixPD"}
+    else if (all(dim(data) == c(7988, 343))) {type <- "exiomatrixEhh"}
     else {cat("Data input has wrong number of dimensions.")}
   } else if (is.list(data)) { # for lists
     if (all(dim(data[[min(year)]]) == rep(4915, 2))) {type <- "eoralist"}
-    else if (all(dim(data[[min(year)]]) == c(4915, 1140))) {type <- "eoralistECC"}
+    else if (all(dim(data[[min(year)]]) == c(4915, 1140))) {type <- "eoralistPD"}
     else if (all(dim(data[[min(year)]]) == rep(7987, 2))) {type <- "exiolist"}
-    else if (all(dim(data[[min(year)]]) == c(7987, 343))) {type <- "exiolistECC"}
+    else if (all(dim(data[[min(year)]]) == c(7987, 343))) {type <- "exiolistPD"}
+    else if (all(dim(data[[min(year)]]) == c(7988, 343))) {type <- "exiolistEhh"}
     else {cat("Data input has wrong number of dimensions.")}
   } else {cat("Data input must be matrix or list.")
   }
@@ -113,7 +115,7 @@ dyads <- function(year, data, input, output) {
       collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
                            header = F)
       rowlab <- collab
-    } else if (type == "eoramatrixECC") {
+    } else if (type == "eoramatrixPD") {
       collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_FD.txt"),
                            header = F)
       rowlab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
@@ -139,7 +141,7 @@ dyads <- function(year, data, input, output) {
       collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
                            header = F)
       rowlab <- collab
-    } else if (type == "eoralistECC") {
+    } else if (type == "eoralistPD") {
       collab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_FD.txt"),
                            header = F)
       rowlab <- read.delim(paste0("Eora26_", min(year), "_bp/labels_T.txt"),
@@ -168,12 +170,17 @@ dyads <- function(year, data, input, output) {
       collab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
       colnames(collab)[1] <- "V2"
       rowlab <- collab
-    } else if (type == "exiomatrixECC") {
+    } else if (type %in% c("exiomatrixPD", "exiomatrixEhh")) {
       collab <- read.delim(paste0("IOT_", min(year), "_ixi/Y.txt"), nrows = 1)
       collab <- data.frame(V2 = substr(colnames(collab)[3:ncol(collab)], 1, 2),
                            V3 = unlist(collab[1, 3:ncol(collab)]))
-      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
+      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"),
+                           stringsAsFactors = F)
+      if (type == "exiomatrixEhh") {
+        rowlab <- rbind(rowlab, c("E hh", "Total", NA))
+      }
     }
+
 
     # Call labeling matrix
     data <- labelingmatrix(1, 2, input, output)
@@ -194,11 +201,15 @@ dyads <- function(year, data, input, output) {
       collab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
       colnames(collab)[1] <- "V2"
       rowlab <- collab
-    } else if (type == "exiolistECC") {
+    } else if (type %in% c("exiolistPD", "exiolistEhh")) {
       collab <- read.delim(paste0("IOT_", min(year), "_ixi/Y.txt"), nrows = 1)
       collab <- data.frame(V2 = substr(colnames(collab)[3:ncol(collab)], 1, 2),
                            V3 = unlist(collab[1, 3:ncol(collab)]))
-      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
+      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"),
+                           stringsAsFactors = F)
+      if (type == "exiolistEhh") {
+        rowlab <- rbind(rowlab, c("E hh", "Total", NA))
+      }
     }
 
     # Call labeling list function
