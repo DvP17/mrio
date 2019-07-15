@@ -10,6 +10,9 @@
 #' * "cc" for **c**limate **c**hange impacts
 #' * "ws" for **w**ater **s**tress
 #' * "lu" for **l**and **u**se
+#' * "en" for **en**ergy demand
+#' * "bw" for **b**lue **w**ater consumption
+#' * "mf" for **m**aterial **f**ootprint
 #' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix
@@ -49,12 +52,20 @@ readEora <- function(year, indicator, method, target) {
     E_hh <- t(mrio::cf_eora$cf_ws) %*% Q_hh
 
   } else if (indicator == "lu") { # land use
+    E <- t(mrio::cf_eora$cf_lu) %*% Q
+    E_hh <- t(mrio::cf_eora$cf_lu) %*% Q_hh
 
   } else if (indicator == "mf") { # material footprint
+    E <- t(mrio::cf_eora$cf_mf) %*% Q
+    E_hh <- t(mrio::cf_eora$cf_mf) %*% Q_hh
 
-  } else if (indicator == "bwc") { # blue water consumption
+  } else if (indicator == "bw") { # blue water consumption
+    E <- t(mrio::cf_eora$cf_bw) %*% Q
+    E_hh <- t(mrio::cf_eora$cf_bw) %*% Q_hh
 
-  } else if (indicator == "ed") { # energy demand
+  } else if (indicator == "en") { # energy demand
+    E <- t(mrio::cf_eora$cf_en) %*% Q
+    E_hh <- t(mrio::cf_eora$cf_en) %*% Q_hh
 
   }
 
@@ -104,6 +115,9 @@ readEora <- function(year, indicator, method, target) {
 #' * "cc" for **c**limate **c**hange impacts
 #' * "ws" for **w**ater **s**tress
 #' * "lu" for **l**and **u**se
+#' * "en" for **en**ergy demand
+#' * "bw" for **b**lue **w**ater consumption
+#' * "mf" for **m**aterial **f**ootprint
 #' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix or list

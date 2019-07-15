@@ -11,7 +11,9 @@
 #' @param year Numeric vector or number for the respective year/s
 #' @param data Data object/ matrix that was created before
 #' @param input String or character vector for input country/ies
-#' @param output String or character vector for output country/ies
+#' @param output String or character vector for output country/ies; note
+#' that data object cannot be already on one country as e.g. specified
+#' through the target argument in readExio
 #'
 #' @return data.frame
 #'
