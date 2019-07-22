@@ -14,7 +14,7 @@ This package provides various calculation methods for environmentally-extended m
 
 ## Create Dyads
 
-Create dyads from the IO matrix.
+Create dyads from IO matrices.
 
 ## Plan
 
