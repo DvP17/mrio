@@ -7,9 +7,13 @@
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator or character string for characterization factor
+#' * "bl" for **b**iodiversity **l**oss
+#' * "bw" for **b**lue **w**ater consumption
 #' * "cc" for **c**limate **c**hange impacts
-#' * "ws" for **w**ater **s**tress
+#' * "en" for **en**ergy demand
 #' * "lu" for **l**and **u**se
+#' * "mf" for **m**aterial **f**ootprint
+#' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
 #' * "pd" for **p**roduction to **d**emand matrix
 #' * "no-double-pt" for **p**roduction to target **d**emand matrix
@@ -59,16 +63,26 @@ readExio <- function(year, indicator, method, target) {
     E_hh <- t(mrio::cf_exio$cf_cc) %*% Q_hh
 
   } else if (indicator == "ws") { # water stress
-    E <- t(mrio::cf_exio$cf_ws) %*% Q
-    E_hh <- t(mrio::cf_exio$cf_ws) %*% Q_hh
+    E <- t(mrio::cf_exio$cf_bw) %*% Q
+    E <- E * cf_exio_multi$cf_ws
+    E_hh <- t(mrio::cf_exio$cf_bw) %*% Q_hh
+    E_hh <- E_hh * cf_exio_multi$cf_ws
 
   } else if (indicator == "lu") { # land use
+    E <- t(mrio::cf_exio$cf_lu) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_lu) %*% Q_hh
 
   } else if (indicator == "mf") { # material footprint
+    E <- t(mrio::cf_exio$cf_mf) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_mf) %*% Q_hh
 
-  } else if (indicator == "bwc") { # blue water consumption
+  } else if (indicator == "bw") { # blue water consumption
+    E <- t(mrio::cf_exio$cf_bw) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_bw) %*% Q_hh
 
-  } else if (indicator == "ed") { # energy demand
+  } else if (indicator == "en") { # energy demand
+    E <- t(mrio::cf_exio$cf_en) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_en) %*% Q_hh
 
   }
 
@@ -144,9 +158,13 @@ readExio <- function(year, indicator, method, target) {
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator or character string for characterization factor
+#' * "bl" for **b**iodiversity **l**oss
+#' * "bw" for **b**lue **w**ater consumption
 #' * "cc" for **c**limate **c**hange impacts
-#' * "ws" for **w**ater **s**tress
+#' * "en" for **en**ergy demand
 #' * "lu" for **l**and **u**se
+#' * "mf" for **m**aterial **f**ootprint
+#' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
 #' * "pd" for **p**roduction to **d**emand matrix
 #' * "no-double-pt" for **p**roduction to target **d**emand matrix

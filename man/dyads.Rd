@@ -13,7 +13,9 @@ dyads(year, data, country)
 
 \item{input}{String or character vector for input country/ies}
 
-\item{output}{String or character vector for output country/ies}
+\item{output}{String or character vector for output country/ies; note
+that data object cannot be already on one country as e.g. specified
+through the target argument in readExio}
 }
 \value{
 data.frame

@@ -12,9 +12,13 @@ readExio(year, indicator, method, target)
 \item{indicator}{Numeric for the row number of the corresponding
 indicator or character string for characterization factor
 \itemize{
+\item "bl" for \strong{b}iodiversity \strong{l}oss
+\item "bw" for \strong{b}lue \strong{w}ater consumption
 \item "cc" for \strong{c}limate \strong{c}hange impacts
-\item "ws" for \strong{w}ater \strong{s}tress
+\item "en" for \strong{en}ergy demand
 \item "lu" for \strong{l}and \strong{u}se
+\item "mf" for \strong{m}aterial \strong{f}ootprint
+\item "ws" for \strong{w}ater \strong{s}tress
 }}
 
 \item{method}{Character string for method to calculate matrix

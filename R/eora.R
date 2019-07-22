@@ -7,12 +7,13 @@
 #' @param year Numeric for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator or character string for characterization factor
-#' * "cc" for **c**limate **c**hange impacts
-#' * "ws" for **w**ater **s**tress
-#' * "lu" for **l**and **u**se
-#' * "en" for **en**ergy demand
+#' * "bl" for **b**iodiversity **l**oss
 #' * "bw" for **b**lue **w**ater consumption
+#' * "cc" for **c**limate **c**hange impacts
+#' * "en" for **en**ergy demand
+#' * "lu" for **l**and **u**se
 #' * "mf" for **m**aterial **f**ootprint
+#' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix
@@ -90,7 +91,7 @@ readEora <- function(year, indicator, method, target) {
   if (!hasArg(method)) {
     emissionmatrix <- matrix(rep(E, length(E)), nrow = length(E)) * L *
       matrix(rep(rowSums(FD), length(E)), nrow = length(E))
-  } else if (method == "demand-production") {
+  } else if (method == "pd") {
     emissionmatrix <- (matrix(rep(E, length(E)), nrow = length(E)) * L) %*% FD
   }
 
@@ -112,12 +113,13 @@ readEora <- function(year, indicator, method, target) {
 #' @param years Numeric vector for the respective year
 #' @param indicator Numeric for the row number of the corresponding
 #' indicator or character string for characterization factor
-#' * "cc" for **c**limate **c**hange impacts
-#' * "ws" for **w**ater **s**tress
-#' * "lu" for **l**and **u**se
-#' * "en" for **en**ergy demand
+#' * "bl" for **b**iodiversity **l**oss
 #' * "bw" for **b**lue **w**ater consumption
+#' * "cc" for **c**limate **c**hange impacts
+#' * "en" for **en**ergy demand
+#' * "lu" for **l**and **u**se
 #' * "mf" for **m**aterial **f**ootprint
+#' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
 #'
 #' @return Matrix or list
