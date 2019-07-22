@@ -1,0 +1,17 @@
+---
+title: "README"
+author: "DvP17"
+date: "7/22/2019"
+output: html_document
+---
+
+
+# Work with MRIO data
+
+This package provides various calculation methods for environmentally-extended multi-regional input–output (EEMRIO) analysis. It includes different characterization factors.
+
+## Plan
+
+- add WIOD
+- add biodiversity loss
+
