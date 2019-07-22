@@ -66,7 +66,7 @@ readExio <- function(year, indicator, method, target) {
     E <- t(mrio::cf_exio$cf_bw) %*% Q
     E <- E * mrio::cf_exio_multi$cf_ws
     E_hh <- t(mrio::cf_exio$cf_bw) %*% Q_hh
-    E_hh <- E_hh * mrio::cf_exio_multi$cf_ws
+    E_hh <- E_hh * mrio::cf_exio_multi$cf_ws_hh
 
   } else if (indicator == "lu") { # land use
     E <- t(mrio::cf_exio$cf_lu) %*% Q
