@@ -68,7 +68,7 @@ cf_bl_qhh_2007 <- rbind(cf_bl_qhh_2007[447:448,], colSums(cf_bl_qhh_2007[449:453
                         cf_bl_qhh_2007[454:461,], colSums(cf_bl_qhh_2007[462:464,]),
                         cf_bl_qhh_2007[465:466,])
 
-cf_bl_i <- matrix(rep(0, 111818), 14)
+cf_bl_i <- matrix(rep(0, 4802), 14)
 for (q in 1:9) {
   for (n in 0:48) {
     i = 1 + 7 * n

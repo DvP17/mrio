@@ -61,10 +61,10 @@ readExio <- function(year, indicator, method, target) {
   } else if (indicator == "bl") { # land use
     Q <- rbind(Q[447:448,], colSums(Q[449:453,]),
                Q[454:461,], colSums(Q[462:464,]), Q[465:466,])
-    E <- colSums(mrio::cf_exio$cf_bl * Q)
+    E <- colSums(mrio::cf_exio_multi$cf_bl * Q)
     Q_hh <- rbind(Q_hh[447:448,], colSums(Q_hh[449:453,]),
                   Q_hh[454:461,], colSums(Q_hh[462:464,]), Q_hh[465:466,])
-    E_hh <- colSums(mrio::cf_exio$cf_bl_hh * Q_hh)
+    E_hh <- colSums(mrio::cf_exio_multi$cf_bl_hh * Q_hh)
 
   } else if (indicator == "bw") { # blue water consumption
     E <- t(mrio::cf_exio$cf_bw) %*% Q
