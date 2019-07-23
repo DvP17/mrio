@@ -58,15 +58,25 @@ readExio <- function(year, indicator, method, target) {
   if (is.numeric(indicator)) {
     E <- Q[indicator,]
 
+  } else if (indicator == "bl") { # land use
+    Q <- rbind(Q[447:448,], colSums(Q[449:453,]),
+               Q[454:461,], colSums(Q[462:464,]), Q[465:466,])
+    E <- colSums(mrio::cf_exio$cf_bl * Q)
+    Q_hh <- rbind(Q_hh[447:448,], colSums(Q_hh[449:453,]),
+                  Q_hh[454:461,], colSums(Q_hh[462:464,]), Q_hh[465:466,])
+    E_hh <- colSums(mrio::cf_exio$cf_bl_hh * Q_hh)
+
+  } else if (indicator == "bw") { # blue water consumption
+    E <- t(mrio::cf_exio$cf_bw) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_bw) %*% Q_hh
+
   } else if (indicator == "cc") { # climate change
     E <- t(mrio::cf_exio$cf_cc) %*% Q
     E_hh <- t(mrio::cf_exio$cf_cc) %*% Q_hh
 
-  } else if (indicator == "ws") { # water stress
-    E <- t(mrio::cf_exio$cf_bw) %*% Q
-    E <- E * mrio::cf_exio_multi$cf_ws
-    E_hh <- t(mrio::cf_exio$cf_bw) %*% Q_hh
-    E_hh <- E_hh * mrio::cf_exio_multi$cf_ws_hh
+  } else if (indicator == "en") { # energy demand
+    E <- t(mrio::cf_exio$cf_en) %*% Q
+    E_hh <- t(mrio::cf_exio$cf_en) %*% Q_hh
 
   } else if (indicator == "lu") { # land use
     E <- t(mrio::cf_exio$cf_lu) %*% Q
@@ -76,13 +86,11 @@ readExio <- function(year, indicator, method, target) {
     E <- t(mrio::cf_exio$cf_mf) %*% Q
     E_hh <- t(mrio::cf_exio$cf_mf) %*% Q_hh
 
-  } else if (indicator == "bw") { # blue water consumption
+  } else if (indicator == "ws") { # water stress
     E <- t(mrio::cf_exio$cf_bw) %*% Q
+    E <- E * mrio::cf_exio_multi$cf_ws
     E_hh <- t(mrio::cf_exio$cf_bw) %*% Q_hh
-
-  } else if (indicator == "en") { # energy demand
-    E <- t(mrio::cf_exio$cf_en) %*% Q
-    E_hh <- t(mrio::cf_exio$cf_en) %*% Q_hh
+    E_hh <- E_hh * mrio::cf_exio_multi$cf_ws_hh
 
   }
 
