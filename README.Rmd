@@ -30,6 +30,7 @@ This R-package provides various calculation methods for environmentally-extended
 * create country-dyads
 
 
+
 ## First Steps
 
 Before you begin, set your working directory to the path where you store your Eora and Exiobase files:
@@ -39,6 +40,7 @@ Before you begin, set your working directory to the path where you store your Eo
 
 ## Plan
 
+- include Exio 1995 data for dyad construction
 - add WIOD
 - add bl and ws for Eora
 - automated download of the data sets
