@@ -1,20 +1,19 @@
 Work with MRIO data
 ===================
 
-This package provides various calculation methods for
-environmentally-extended multi-regional input–output (EEMRIO) analysis.
+This R-package provides various calculation methods for
+environmentally-extended multi-regional input–output (EE-MRIO) analysis.
 It includes different characterization factors.
 
 -   currently supports Exiobase3 and Eora
 -   calculate:
     -   **b**iodiversity **l**oss `"bl"` (currently only for Exiobase)
-    -   **b**lue **w**ater consumption `"bw"` (currently only for
-        Exiobase)
+    -   **b**lue **w**ater consumption `"bw"`
     -   **c**limate **c**hange impacts `"cc"`
     -   **en**ergy demand `"en"`
     -   **l**and **u**se `"lu"`
     -   **m**aterial **f**ootprint `"mf"`
-    -   **w**ater **s**tress `"ws"`
+    -   **w**ater **s**tress `"ws"` (currently only for Exiobase)
 -   calculate:
     -   **p**roduction to **d**emand matrix `"pd"`
     -   **p**roduction to target **d**emand matrix `"no-double-pt"`
@@ -36,3 +35,4 @@ Plan
 
 -   add WIOD
 -   add bl and ws for Eora
+-   automated download of the data sets
