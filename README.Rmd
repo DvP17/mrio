@@ -10,7 +10,7 @@ output:
 
 # Work with MRIO data
 
-This package provides various calculation methods for environmentally-extended multi-regional input–output (EEMRIO) analysis. It includes different characterization factors.
+This R-package provides various calculation methods for environmentally-extended multi-regional input–output (EE-MRIO) analysis. It includes different characterization factors.
 
 * currently supports Exiobase3 and Eora
 * calculate:
@@ -41,4 +41,5 @@ Before you begin, set your working directory to the path where you store your Eo
 
 - add WIOD
 - add bl and ws for Eora
+- automated download of the data sets
 

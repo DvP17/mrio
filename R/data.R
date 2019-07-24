@@ -9,6 +9,17 @@
 #'
 "cf_exio"
 
+#' Data for Characterization Factors for EXIOBASE
+#'
+#' This is data on the characterization factors for climate change, water
+#' stress, ... for EXIOBASE.
+#'
+#'
+#' @format A list with different elements
+#'
+#'
+"cf_exio_multi"
+
 #' Data for Characterization Factors for Eora
 #'
 #' This is data presents characterization factors for climate change, water
