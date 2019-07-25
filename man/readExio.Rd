@@ -37,7 +37,8 @@ country if double counting is prevented}
 Produces a matrix
 }
 \description{
-Load EXIOBASE data and return a matrix from an environmental indicator.
+Load EXIOBASE data and return a matrix from an environmental indicator or a
+set of characterization factors.
 }
 \examples{
 readExio(year = 2000, indicator = 200)

@@ -1,6 +1,7 @@
 #' Construct matrix for specific environmental indicator of EXIOBASE
 #'
-#' Load EXIOBASE data and return a matrix from an environmental indicator.
+#' Load EXIOBASE data and return a matrix from an environmental indicator or a
+#' set of characterization factors.
 #'
 #' @usage readExio(year, indicator, method, target)
 #'
