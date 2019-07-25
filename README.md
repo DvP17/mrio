@@ -20,7 +20,7 @@ calculation methods and characterization factors.
     -   **t**arget to final **s**upply matrix `"no-double-ts"`
     -   **t**arget to final **d**emand matrix `"no-double-td"`
     -   **p**roduction to final **d**emand matrix `"no-double-pd"`
--   create country-dyads
+-   create country dyads
 
 First Steps
 -----------
@@ -64,5 +64,5 @@ Plan
 ----
 
 -   add WIOD
--   add bl and ws for Eora
--   automated download of the data sets
+-   add `bl` and `ws` for Eora
+-   implement function to download data automatically

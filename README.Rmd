@@ -27,7 +27,7 @@ This R-package provides various methods for environmentally-extended multi-regio
   + **t**arget to final **s**upply matrix `"no-double-ts"`
   + **t**arget to final **d**emand matrix `"no-double-td"`
   + **p**roduction to final **d**emand matrix `"no-double-pd"`
-* create country-dyads
+* create country dyads
 
 
 
@@ -66,6 +66,6 @@ utils::View(mrio::cf_eora[mrio::cf_eora$cf_cc > 0,])
 ## Plan
 
 - add WIOD
-- add bl and ws for Eora
-- automated download of the data sets
+- add `bl` and `ws` for Eora
+- implement function to download data automatically
 
