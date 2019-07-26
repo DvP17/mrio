@@ -15,6 +15,7 @@
 #' * "mf" for **m**aterial **f**ootprint
 #' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
+#' @md
 #'
 #' @return Matrix
 #'
@@ -121,6 +122,7 @@ readEora <- function(year, indicator, method, target) {
 #' * "mf" for **m**aterial **f**ootprint
 #' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
+#' @md
 #'
 #' @return Matrix or list
 #'
