@@ -3,13 +3,13 @@
 \docType{data}
 \name{cf_eora}
 \alias{cf_eora}
-\title{Data for Characterization Factors for Eora}
-\format{A data frame with ... columns and 2720 rows}
+\title{Data on Characterization Factors for Eora}
+\format{A data frame with 8 columns and 2720 rows}
 \usage{
 cf_eora
 }
 \description{
-This is data presents characterization factors for climate change, water
-stress, ... for Eora.
+Data on characterization factors for climate change impact, blue water
+consumption, energy usage, land use, and material footrpint for EXIOBASE3.
 }
 \keyword{datasets}

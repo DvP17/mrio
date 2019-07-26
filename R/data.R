@@ -1,32 +1,34 @@
-#' Data for Characterization Factors for EXIOBASE
+#' Data on Characterization Factors for EXIOBASE3
 #'
-#' This is data on the characterization factors for climate change, water
-#' stress, ... for EXIOBASE.
+#' Data on characterization factors for climate change impact, water
+#' stress, blue water consumption, energy usage, land use, and material
+#' footrpint for EXIOBASE3.
 #'
 #'
-#' @format A data frame with ... columns and ... rows
+#' @format A data frame with 9 columns and 1104 rows
 #'
 #'
 "cf_exio"
 
-#' Data for Characterization Factors for EXIOBASE
+#' Data on Characterization Factors for EXIOBASE
 #'
-#' This is data on the characterization factors for climate change, water
-#' stress, ... for EXIOBASE.
+#' A compilation of data on characterization factors for water stress, and
+#' biodiversity loss for EXIOBASE3.
 #'
 #'
-#' @format A list with different elements
+#' @format A list with different elements such as characterization factors for
+#' water stress and characterization components on biodicersity loss.
 #'
 #'
 "cf_exio_multi"
 
-#' Data for Characterization Factors for Eora
+#' Data on Characterization Factors for Eora
 #'
-#' This is data presents characterization factors for climate change, water
-#' stress, ... for Eora.
+#' Data on characterization factors for climate change impact, blue water
+#' consumption, energy usage, land use, and material footrpint for EXIOBASE3.
 #'
 #'
-#' @format A data frame with ... columns and 2720 rows
+#' @format A data frame with 8 columns and 2720 rows
 #'
 #'
 "cf_eora"

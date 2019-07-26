@@ -3,13 +3,14 @@
 \docType{data}
 \name{cf_exio_multi}
 \alias{cf_exio_multi}
-\title{Data for Characterization Factors for EXIOBASE}
-\format{A list with different elements}
+\title{Data on Characterization Factors for EXIOBASE}
+\format{A list with different elements such as characterization factors for
+water stress and characterization components on biodicersity loss.}
 \usage{
 cf_exio_multi
 }
 \description{
-This is data on the characterization factors for climate change, water
-stress, ... for EXIOBASE.
+A compilation of data on characterization factors for water stress, and
+biodiversity loss for EXIOBASE3.
 }
 \keyword{datasets}
