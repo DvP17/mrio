@@ -69,7 +69,7 @@ utils::View(mrio::cf_eora[mrio::cf_eora$cf_cc > 0,])
 
 ## Plan
 
-- add WIOD
+- add WIOD data
 - add `bl` and `ws` for Eora
 - include social indicators
 - include product to product (pxp) matrix calculation for Exiobase 
