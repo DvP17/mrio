@@ -78,4 +78,7 @@ Plan
 
 -   add WIOD
 -   add `bl` and `ws` for Eora
+-   include social indicators
+-   include product to product (pxp) matrix calculation for Exiobase
+-   structural path calculation?
 -   implement function to download data automatically
