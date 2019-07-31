@@ -32,24 +32,27 @@
 #' target = "CHN")
 #'
 #' @export
-readExio <- function(year, indicator, method, target) {
+readExio <- function(year, indicator, method, target, type = "ixi") {
 
   # define path
   path <- c(
-    paste0("IOT_", year, "_ixi/A.txt"),
-    paste0("IOT_", year, "_ixi/Y.txt"),
-    paste0("IOT_", year, "_ixi/satellite/F.txt"),
-    paste0("IOT_", year, "_ixi/satellite/F_hh.txt")
+    paste0("IOT_", year, "_", type, "/A.txt"),
+    paste0("IOT_", year, "_", type, "/Y.txt"),
+    paste0("IOT_", year, "_", type, "/satellite/F.txt"),
+    paste0("IOT_", year, "_", type, "/satellite/F_hh.txt")
   )
 
+  # Declare Type
+  n <- ifelse(type == "ixi", 7989, 9802)
+
   # read matrices
-  A <- as.matrix(data.table::fread(path[1], select = 3:7989, skip = 3,
+  A <- as.matrix(data.table::fread(path[1], select = 3:n, skip = 3,
                                    header = F))
 
   FD <- as.matrix(data.table::fread(path[2], select = 3:345, skip = 3,
                                     header = F))
 
-  Q <- as.matrix(data.table::fread(path[3], select = 2:7988, skip = 2,
+  Q <- as.matrix(data.table::fread(path[3], select = 2:(n-1), skip = 2,
                                    header = F))
 
   Q_hh <- as.matrix(data.table::fread(path[4], select = 2:344, skip = 2,
@@ -191,7 +194,7 @@ readExio <- function(year, indicator, method, target) {
 #' target = "USA")
 #'
 #' @export
-exioloop <- function(years, indicator, method, target) {
+exioloop <- function(years, indicator, method, target, type = "ixi") {
 
   # Test duration and ask for choice
   sysspeed <- system.time(for (i in 1:999999) {y <- i ^ i})
@@ -213,7 +216,7 @@ exioloop <- function(years, indicator, method, target) {
     emissionall <- list()
     for (i in years) {
 
-      emissionall[[i]] <- readExio(i, indicator, method, target)
+      emissionall[[i]] <- readExio(i, indicator, method, target, type)
 
       # progress bar
       setTxtProgressBar(txtProgressBar(min = min(years) - 1,
