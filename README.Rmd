@@ -72,7 +72,7 @@ utils::View(mrio::cf_eora[mrio::cf_eora$cf_cc > 0,])
 - add WIOD data
 - add `bl` and `ws` for Eora
 - include social indicators
-- include product to product (pxp) matrix calculation for Exiobase 
+- include product to product (pxp) also for dyad construction
 - structural path calculation?
 - implement function to download data automatically
 

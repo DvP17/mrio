@@ -32,6 +32,10 @@ indicator or character string for characterization factor
 
 \item{target}{Three letter country code for corresponding target
 country if double counting is prevented}
+
+\item{type}{Which type of matrix should be used for calculation: industry to
+industry ("ixi") or product to product ("pxp"). Default is type = "ixi".
+Make sure you have downloaded pxp-matrices if you want to work with them.}
 }
 \value{
 Matrix or list

@@ -23,7 +23,9 @@
 #' * "no-double-pd" for **p**roduction to final **d**emand matrix
 #' @param target Three letter country code for corresponding target
 #' country if double counting is prevented
-#' @md
+#' @param type Which type of matrix should be used for calculation: industry to
+#' industry ("ixi") or product to product ("pxp"). Default is type = "ixi".
+#' Make sure you have downloaded pxp-matrices if you want to work with them.
 #'
 #' @return Produces a matrix
 #'
@@ -32,6 +34,7 @@
 #' target = "CHN")
 #'
 #' @export
+#' @md
 readExio <- function(year, indicator, method, target, type = "ixi") {
 
   # define path
@@ -185,7 +188,9 @@ readExio <- function(year, indicator, method, target, type = "ixi") {
 #' * "no-double-pd" for **p**roduction to final **d**emand matrix
 #' @param target Three letter country code for corresponding target
 #' country if double counting is prevented
-#' @md
+#' @param type Which type of matrix should be used for calculation: industry to
+#' industry ("ixi") or product to product ("pxp"). Default is type = "ixi".
+#' Make sure you have downloaded pxp-matrices if you want to work with them.
 #'
 #' @return Matrix or list
 #'
@@ -194,6 +199,7 @@ readExio <- function(year, indicator, method, target, type = "ixi") {
 #' target = "USA")
 #'
 #' @export
+#' @md
 exioloop <- function(years, indicator, method, target, type = "ixi") {
 
   # Test duration and ask for choice

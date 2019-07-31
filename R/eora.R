@@ -15,13 +15,13 @@
 #' * "mf" for **m**aterial **f**ootprint
 #' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
-#' @md
 #'
 #' @return Matrix
 #'
 #' @examples readEora(year = 1995, indicator = 200)
 #'
 #' @export
+#' @md
 readEora <- function(year, indicator, method, target) {
 
   # define path
@@ -122,13 +122,13 @@ readEora <- function(year, indicator, method, target) {
 #' * "mf" for **m**aterial **f**ootprint
 #' * "ws" for **w**ater **s**tress
 #' @param method Character string for method to calculate matrix
-#' @md
 #'
 #' @return Matrix or list
 #'
 #' @examples eoraloop(years = 1995:2000, indicator = 200)
 #'
 #' @export
+#' @md
 eoraloop <- function(years, indicator, method) {
 
   # Test duration and ask for choice
