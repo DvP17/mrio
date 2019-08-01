@@ -28,14 +28,18 @@ dyads <- function(year, data, input, output) {
     else if (all(dim(data) == c(4915, 1140))) {type <- "eoramatrixPD"}
     else if (all(dim(data) == rep(7987, 2))) {type <- "exiomatrix"}
     else if (all(dim(data) == c(7987, 343))) {type <- "exiomatrixPD"}
+    else if (all(dim(data) == c(9800, 343))) {type <- "exiomatrixPD_pxp"}
     else if (all(dim(data) == c(7988, 343))) {type <- "exiomatrixEhh"}
+    else if (all(dim(data) == c(9801, 343))) {type <- "exiomatrixEhh_pxp"}
     else {cat("Data input has wrong number of dimensions.")}
   } else if (is.list(data)) { # for lists
     if (all(dim(data[[min(year)]]) == rep(4915, 2))) {type <- "eoralist"}
     else if (all(dim(data[[min(year)]]) == c(4915, 1140))) {type <- "eoralistPD"}
     else if (all(dim(data[[min(year)]]) == rep(7987, 2))) {type <- "exiolist"}
     else if (all(dim(data[[min(year)]]) == c(7987, 343))) {type <- "exiolistPD"}
+    else if (all(dim(data[[min(year)]]) == c(9800, 343))) {type <- "exiolistPD_pxp"}
     else if (all(dim(data[[min(year)]]) == c(7988, 343))) {type <- "exiolistEhh"}
+    else if (all(dim(data[[min(year)]]) == c(9801, 343))) {type <- "exiolistEhh_pxp"}
     else {cat("Data input has wrong number of dimensions.")}
   } else {cat("Data input must be matrix or list.")
   }
@@ -168,15 +172,23 @@ dyads <- function(year, data, input, output) {
 
   if (grepl("exiomatrix", type)) {
 
+    # Extract if industry to industry or product to product
+    if (grepl("pxp", type)) {
+      kind <- "pxp"
+      type <- gsub("_.*", "", type)
+    } else {
+      kind <- "ixi"
+    }
+
     if (type == "exiomatrix") {
-      collab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
+      collab <- read.delim(paste0("IOT_", min(year), "_", kind, "/unit.txt"))
       colnames(collab)[1] <- "V2"
       rowlab <- collab
     } else if (type %in% c("exiomatrixPD", "exiomatrixEhh")) {
-      collab <- read.delim(paste0("IOT_", min(year), "_ixi/Y.txt"), nrows = 1)
+      collab <- read.delim(paste0("IOT_", min(year), "_", kind, "/Y.txt"), nrows = 1)
       collab <- data.frame(V2 = substr(colnames(collab)[3:ncol(collab)], 1, 2),
                            V3 = unlist(collab[1, 3:ncol(collab)]))
-      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"),
+      rowlab <- read.delim(paste0("IOT_", min(year), "_", kind, "/unit.txt"),
                            stringsAsFactors = F)
       if (type == "exiomatrixEhh") {
         rowlab <- rbind(rowlab, c("E hh", "Total", NA))
@@ -199,15 +211,22 @@ dyads <- function(year, data, input, output) {
 
   if (grepl("exiolist", type)) {
 
+    if (grepl("pxp", type)) {
+      kind <- "pxp"
+      type <- gsub("_.*", "", type)
+    } else {
+      kind <- "ixi"
+    }
+
     if (type == "exiolist") {
-      collab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"))
+      collab <- read.delim(paste0("IOT_", min(year), "_", kind, "/unit.txt"))
       colnames(collab)[1] <- "V2"
       rowlab <- collab
     } else if (type %in% c("exiolistPD", "exiolistEhh")) {
-      collab <- read.delim(paste0("IOT_", min(year), "_ixi/Y.txt"), nrows = 1)
+      collab <- read.delim(paste0("IOT_", min(year), "_", kind, "/Y.txt"), nrows = 1)
       collab <- data.frame(V2 = substr(colnames(collab)[3:ncol(collab)], 1, 2),
                            V3 = unlist(collab[1, 3:ncol(collab)]))
-      rowlab <- read.delim(paste0("IOT_", min(year), "_ixi/unit.txt"),
+      rowlab <- read.delim(paste0("IOT_", min(year), "_", kind, "/unit.txt"),
                            stringsAsFactors = F)
       if (type == "exiolistEhh") {
         rowlab <- rbind(rowlab, c("E hh", "Total", NA))

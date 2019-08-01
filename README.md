@@ -73,12 +73,16 @@ utils::View(mrio::cf_eora)
 utils::View(mrio::cf_eora[mrio::cf_eora$cf_cc > 0,])
 ```
 
+Recent Advancements
+-------------------
+
+-   added processing of pxp-matrices from Exiobase
+
 Plan
 ----
 
 -   add WIOD data
 -   add `bl` and `ws` for Eora
 -   include social indicators
--   include product to product (pxp) matrix calculation for Exiobase
 -   structural path calculation?
 -   implement function to download data automatically
