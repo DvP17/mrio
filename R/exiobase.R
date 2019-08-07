@@ -1,6 +1,6 @@
-#' Construct matrix for specific environmental indicator of EXIOBASE
+#' Construct matrix for specific environmental indicator of EXIOBASE3
 #'
-#' Load EXIOBASE data and return a matrix from an environmental indicator or a
+#' Load EXIOBASE3 data and return a matrix from an environmental indicator or a
 #' set of characterization factors.
 #'
 #' @usage readExio(year, indicator, method, target)
@@ -163,10 +163,10 @@ readExio <- function(year, indicator, method, target, type = "ixi") {
 
 
 
-#' Construct list of matrices for specific environmental indicator of EXIOBASE
+#' Construct list of matrices for specific environmental indicator of EXIOBASE3
 #'
-#' Load EXIOBASE data and return a list of matrices from an environmental
-#' indicator ocer a period of time.
+#' Load EXIOBASE3 data and return a list of matrices from an environmental
+#' indicator over a period of time.
 #'
 #' @usage exioloop(years, indicator, method, target)
 #'
@@ -239,12 +239,3 @@ exioloop <- function(years, indicator, method, target, type = "ixi") {
   }
 
 }
-
-
-
-
-# emissiondyads <- emissionmatrix %>% as.data.frame() %>%
-#   gather(row.names, var, everything())
-# reshape2::colsplit(emissiondyads$Var1, "_", c("1","2"))
-
-

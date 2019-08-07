@@ -2,7 +2,7 @@
 % Please edit documentation in R/exiobase.R
 \name{exioloop}
 \alias{exioloop}
-\title{Construct list of matrices for specific environmental indicator of EXIOBASE}
+\title{Construct list of matrices for specific environmental indicator of EXIOBASE3}
 \usage{
 exioloop(years, indicator, method, target)
 }
@@ -41,8 +41,8 @@ Make sure you have downloaded pxp-matrices if you want to work with them.}
 Matrix or list
 }
 \description{
-Load EXIOBASE data and return a list of matrices from an environmental
-indicator ocer a period of time.
+Load EXIOBASE3 data and return a list of matrices from an environmental
+indicator over a period of time.
 }
 \examples{
 exioloop(years = 1995:2000, indicator = 200)

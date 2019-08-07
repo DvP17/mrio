@@ -2,7 +2,7 @@
 % Please edit documentation in R/exiobase.R
 \name{readExio}
 \alias{readExio}
-\title{Construct matrix for specific environmental indicator of EXIOBASE}
+\title{Construct matrix for specific environmental indicator of EXIOBASE3}
 \usage{
 readExio(year, indicator, method, target)
 }
@@ -41,7 +41,7 @@ Make sure you have downloaded pxp-matrices if you want to work with them.}
 Produces a matrix
 }
 \description{
-Load EXIOBASE data and return a matrix from an environmental indicator or a
+Load EXIOBASE3 data and return a matrix from an environmental indicator or a
 set of characterization factors.
 }
 \examples{
