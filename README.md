@@ -2,10 +2,11 @@ Work with MRIO data
 ===================
 
 This R-package provides various methods for environmentally-extended
-multi-regional input–output (EE-MRIO) analysis. It provides different
-methods for calculating EEMRIO matrices and characterization factors.
+multi-regional input–output (EE-MRIO) analysis. It offers different
+methods for calculating EEMRIO matrices and includes a set of diverse
+characterization factors.
 
--   supports Exiobase3 and Eora
+-   supports EXIOBASE3 and Eora
 -   characterization factors:
     -   **b**iodiversity **l**oss `"bl"` (currently only for Exiobase)
     -   **b**lue **w**ater consumption `"bw"`
@@ -62,11 +63,11 @@ before.
 
 ### 4 Look Into Characterization Factors
 
-For further information on which extensions are include for which
-environmental impact have a look on the characterization factors listed
+For further information on which extensions are included for which
+environmental impact, have a look on the characterization factors listed
 in the package. Notice that calculation of water stress and biodiversity
-loss is a little more complex, which makes renders it difficult to
-provide a list on those CFs.
+loss is a little more complex, which makes it difficult to provide a
+simple list on those CFs.
 
 ``` r
 utils::View(mrio::cf_eora)
@@ -76,13 +77,14 @@ utils::View(mrio::cf_eora[mrio::cf_eora$cf_cc > 0,])
 Recent Advancements
 -------------------
 
--   added processing of pxp-matrices from Exiobase
+-   added processing of pxp-matrices for EXIOBASE3
 
 Plan
 ----
 
 -   add WIOD data
 -   add `bl` and `ws` for Eora
+-   add `bl` for pxp-matrices
 -   include social indicators
 -   structural path calculation?
 -   implement function to download data automatically
