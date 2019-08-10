@@ -1,3 +1,12 @@
+<span style="color:red">**Methods on prevention of double-counting and
+constructing characterization factors were taken from:**</span>
+
+Cabernard, L., Pfister, S., & Hellweg, S. (2019). A new method for
+analyzing sustainability performance of global supply chains and its
+application to material resources. Science of The Total Environment,
+684, 164–177.
+<a href="https://doi.org/10.1016/j.scitotenv.2019.04.434" class="uri">https://doi.org/10.1016/j.scitotenv.2019.04.434</a>
+
 Work with MRIO data
 ===================
 

@@ -8,6 +8,11 @@ output:
 ---
 
 
+<span style="color:red">**Methods on prevention of double-counting and constructing characterization factors were taken from:**</span>
+
+Cabernard, L., Pfister, S., & Hellweg, S. (2019). A new method for analyzing sustainability performance of global supply chains and its application to material resources. Science of The Total Environment, 684, 164–177. https://doi.org/10.1016/j.scitotenv.2019.04.434
+
+
 # Work with MRIO data
 
 This R-package provides various methods for environmentally-extended multi-regional input–output (EE-MRIO) analysis. It offers different methods for calculating EEMRIO matrices and includes a set of diverse characterization factors.
@@ -28,7 +33,6 @@ This R-package provides various methods for environmentally-extended multi-regio
   + **t**arget to final **d**emand matrix `"no-double-td"`
   + **p**roduction to final **d**emand matrix `"no-double-pd"`
 * create country dyads
-
 
 
 ## First Steps
