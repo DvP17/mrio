@@ -12,6 +12,10 @@ output:
 
 Cabernard, L., Pfister, S., & Hellweg, S. (2019). A new method for analyzing sustainability performance of global supply chains and its application to material resources. Science of The Total Environment, 684, 164–177. https://doi.org/10.1016/j.scitotenv.2019.04.434
 
+*Matlab Tool:*
+
+https://data.mendeley.com/datasets/nddmgkm3cc/1
+
 
 # Work with MRIO data
 

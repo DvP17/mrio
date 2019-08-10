@@ -7,6 +7,10 @@ application to material resources. Science of The Total Environment,
 684, 164–177.
 <a href="https://doi.org/10.1016/j.scitotenv.2019.04.434" class="uri">https://doi.org/10.1016/j.scitotenv.2019.04.434</a>
 
+*Matlab Tool:*
+
+<a href="https://data.mendeley.com/datasets/nddmgkm3cc/1" class="uri">https://data.mendeley.com/datasets/nddmgkm3cc/1</a>
+
 Work with MRIO data
 ===================
 
