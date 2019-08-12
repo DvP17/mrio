@@ -70,13 +70,13 @@ exio_cc_dyad <- mrio::dyads(1995:1996, exio_cc)
 utils::View(exio_cc_dyad[1:100,])
 ```
 
-Also the construction of the dyads is time-consuming. Please notice that
-no progress bar or estimated time for process completion is given
-before.
+Attention: The construction of dyads can be time-consuming. Please
+notice that no progress bar or estimated time for process completion is
+given before.
 
 ### 4 Look Into Characterization Factors
 
-For further information on which extensions are included for which
+For additional information on which extensions are included for which
 environmental impact, have a look on the characterization factors listed
 in the package. Notice that calculation of water stress and biodiversity
 loss is a little more complex, which makes it difficult to provide a
