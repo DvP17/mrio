@@ -1,6 +1,6 @@
 Package: mrio
 Type: Package
-Title: Work with Multiregional Input-Output Tables
+Title: Multi-Regional Input-Output Analysis with R
 Version: 0.0.3
 Author: DvP17
 Maintainer: <dvp17@protonmail.ch>
@@ -8,8 +8,8 @@ Description: Work with MRIO data bases as Eora and Exiobase and create
     matrices for environmental extensions. Extract dyadic data.frames from
     these matrices.
 License: GPL-3
-Encoding: UTF-8
-LazyData: TRUE
+LazyLoad: yes
+LazyData: yes
 Imports:
   bit64 (>= 0.9-7),
   data.table (>= 1.12.0),
